@@ -1,0 +1,7 @@
+MadLib: Sick Note
+
+Hello [boss], this is [person's name].
+
+I think I've got that [stomach] virus that is going around [campus]. I'm [sorry], but I can't come into [school] today. My [doctor] says I should stay [home] and [rest] for up to [2] weeks.
+
+I will try to stop in by [2pm] tomorrow, but if not, I'll [sleep] a bit and get some [work] done at [home]. If you need me, you can reach me at [MadEmail]. I hope I will be [well] enough to come in [tomorrow]. Thanks!
