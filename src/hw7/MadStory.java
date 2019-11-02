@@ -14,7 +14,6 @@ private InputDataFile datafile;
 public void readFromFile(String filename)
 {
     String inword;
-    String words[];
     List<String> wordList;
     
     datafile = new InputDataFile(filename);
@@ -37,8 +36,6 @@ public void readFromFile(String filename)
             story.add("");
         else
         {
-//            words = inword.split("\\p{Space}");
-//            wordList = Arrays.asList(words);
             wordList = MadUtils.smartSplit(inword);
             story.addAll(wordList);
         }
