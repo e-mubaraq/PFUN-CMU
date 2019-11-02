@@ -5,7 +5,6 @@ import java.util.*;
 
 public class MadLibs
 {
-
     public static void main(String[] args) throws IOException, ClassNotFoundException
     {
         BufferedReader keyboard = new BufferedReader(new InputStreamReader(System.in));
@@ -32,10 +31,10 @@ public class MadLibs
 
         story = new MadStory();
         story.readFromFile(storyFile);
-        story.print(80);
+        story.print(5);
         story.setupGame(keyboard, dictionary);
         story.play(keyboard);
-        story.print(80);
+        story.print(8);
         //dictionary.print();
 
             
@@ -43,8 +42,6 @@ public class MadLibs
         out = new ObjectOutputStream(new FileOutputStream(fileName));
         out.writeObject(dictionary);
         out.close();
-
+        
     }
-
-
 }

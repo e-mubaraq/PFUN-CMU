@@ -37,8 +37,9 @@ public void readFromFile(String filename)
             story.add("");
         else
         {
-            words = inword.split("\\p{Space}");
-            wordList = Arrays.asList(words);
+//            words = inword.split("\\p{Space}");
+//            wordList = Arrays.asList(words);
+            wordList = MadUtils.smartSplit(inword);
             story.addAll(wordList);
         }
         inword = datafile.readString();
@@ -86,7 +87,7 @@ public boolean play(BufferedReader keyboard) throws IOException
 {
     String str, prompt, madWord, newWord;
     MadPrompt p;
-    int i;
+    int i, position;
 
     if (!isReady)
         return false;
@@ -99,14 +100,16 @@ public boolean play(BufferedReader keyboard) throws IOException
     
     // For each MadPrompt taken off the Stack, prompt the user (use Utils.getIndefiniteArticle())
     // then use the entered value to replace the mad word in the story LinkedList.
-    for (i = 0; i < prompts.size(); i++)
+    for (i = 0; i <= prompts.size(); i++)
     {
+        
         p = prompts.pop();
         prompt = p.getPrompt();
-        i = p.getPosition();
-        System.out.println("Please enter " + Utils.getIndefiniteArticle(prompt) + prompt);
+        position = p.getPosition();
+        System.out.print("Please enter " + Utils.getIndefiniteArticle(prompt) + " " + prompt + ": ");
+        
         str = keyboard.readLine();
-        madWord = story.get(i - 1);
+        madWord = story.get(position - 1);
         
         // Replace word in the story 
         newWord = MadUtils.replaceMadWord(madWord, str);
@@ -130,8 +133,28 @@ public void print(int n)
     int i = 0;
     for (String s : story)
     {
-        System.out.print(i + ": " + s + " " );
         i++;
+        if (i % n == 0)
+        {
+            System.out.print(i + ": " + s + " " );
+            System.out.println();
+            continue;
+        }
+        System.out.print(i + ": " + s + " " ); 
+    }
+        
+    System.out.println();
+    
+    for (String s : story)
+    {
+        i++;
+        if (i % n == 0)
+        {
+            System.out.print(i + ": " + s + " " );
+            System.out.println();
+            continue;
+        }
+        System.out.print(i + ": " + s + " " ); 
     }
         
     System.out.println();

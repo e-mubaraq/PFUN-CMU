@@ -17,7 +17,7 @@ public class MadPrompt
  */
 
     /*
-     * public MadPrompt() { position = 0; prompt = ""; }
+     * public MadPrompt() { position = -1; prompt = ""; }
      */
 
 
@@ -50,6 +50,6 @@ public void setPrompt(String d)
 
 public String toString()
 {
-    return "MadWord at position: " + getPosition() + " with description: " + getPrompt();
+    return "MadWord at position " + getPosition() + " with description: " + getPrompt();
 }
 }

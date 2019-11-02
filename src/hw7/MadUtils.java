@@ -51,19 +51,19 @@ public static StringBuffer lookupWord(String word, MadDictionary d, BufferedRead
 
 public static String getMadWord(String str)
 {
+    int n, m;
     String madWord = null;
     String wordRep = "";
     
-    if (str.startsWith("["))
+    if (str.contains("["))
         wordRep = str;
     else
         return null;
     if (str.contains("]"))
     {
-        if(!str.endsWith("]"))
-            madWord = wordRep.substring(1, wordRep.length() - 2);
-        else
-            madWord = wordRep.substring(1, wordRep.length() - 1);
+        n = str.indexOf("]");
+        m = str.indexOf("[");
+        madWord = wordRep.substring(m+1, n);
     }
 
     return madWord;
@@ -79,14 +79,48 @@ public static String replaceMadWord(String madWord, String newWord)
     
     return result;
 }
-public static String smartSplit(String inword)
+public static LinkedList<String> smartSplit(String wordtoSplit)
 {
-    String word;
+    int i, n;
+    String wordRep = "";
     String words[];
-    words = inword.split("[//p{Space}]");
-    if (inword.equals(""))
-        return null;
-    return "";
+    LinkedList<String> smartList = new LinkedList<String>();
+    
+    //words = wordtoSplit.split("\\p{Space}");
+    words = wordtoSplit.split("(?=[,.!?:\\[])");
+    
+    if (wordtoSplit.equals(""))
+        smartList = null;
+    else
+    {
+//        for (String word : words)
+//        {
+//            if (word.startsWith("["))
+//            {
+//                wordRep = word;
+//                if (word.contains("]"))
+//                    wordRep = word;
+//            }
+//            if (word.contains("]"))
+//            {
+//                wordRep = wordRep + " " + word;
+//            }
+//            else
+//                wordRep = word;
+//
+//                wordRep = word;
+//                
+//            //smartList.add(wordRep);
+//            
+//            
+//        }
+      
+        for (String word : words)
+            smartList.add(word);
+        //smartList = Arrays.asList(words);
+    }
+    return smartList;
+    
 }
 }
 
