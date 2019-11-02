@@ -147,9 +147,18 @@ public void print(int n)
         i++;
         if (i % n == 0)
         {
-            System.out.print(i + ": " + s + " " );
-            System.out.println();
-            continue;
+            if (MadUtils.getMadWord(s) == null)
+            {
+                System.out.print(i + ": " + s + " " );
+                System.out.println();
+                continue;
+            }
+            else
+            {
+                System.out.print(MadUtils.replaceMadWord(s, "_______"));
+                System.out.println();
+                continue;
+            }
         }
         System.out.print(i + ": " + s + " " ); 
     }
