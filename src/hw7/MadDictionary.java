@@ -1,5 +1,14 @@
 package hw7;
-
+/**
+ * MadDictionary is an helper class that stores madWords and their definitions.
+ *
+ * @author Mubarak Mikail
+ * 
+ * Andrew ID: mmikail 
+ *
+ * On my honor, as a Carnegie-Mellon Africa student, I have neither given nor received unauthorized assistance on this work.
+ *
+ */
 import java.io.*;
 import java.util.*;
 

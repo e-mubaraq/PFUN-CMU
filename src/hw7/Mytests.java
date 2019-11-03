@@ -10,7 +10,7 @@ public class Mytests
         String madWord;
         s1 = "[Boss]";
         s2 = s1 + ".,";
-        s3 = " That boy, [person's name here] is good";
+        s3 = " That boy. [person's name here] is good";
         s4 = "s4";
         s5 = "Hello [boss] hhhh, this is [Mubarak Mikail].";
         s6 = "";

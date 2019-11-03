@@ -1,5 +1,15 @@
 package hw7;
 
+/**
+ * MadPrompt is a class that stores the description of a madword and its position in the story.
+ *
+ * @author Mubarak Mikail
+ * 
+ * Andrew ID: mmikail 
+ *
+ * On my honor, as a Carnegie-Mellon Africa student, I have neither given nor received unauthorized assistance on this work.
+ *
+ */
 public class MadPrompt
 {
     private int position;

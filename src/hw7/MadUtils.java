@@ -3,6 +3,16 @@ package hw7;
 import java.io.*;
 import java.util.*;
 
+/**
+ * MadUtils is a helper class that contains methods that are important to the working of the MadLibs game.
+ *
+ * @author Mubarak Mikail
+ * 
+ * Andrew ID: mmikail 
+ *
+ * On my honor, as a Carnegie-Mellon Africa student, I have neither given nor received unauthorized assistance on this work.
+ *
+ */
 public class MadUtils
 {
 
@@ -81,46 +91,18 @@ public static String replaceMadWord(String madWord, String newWord)
 }
 public static LinkedList<String> smartSplit(String wordtoSplit)
 {
-    int i, n;
-    String wordRep = "";
     String words[];
     LinkedList<String> smartList = new LinkedList<String>();
-    
-    //words = wordtoSplit.split("\\p{Space}");
-    words = wordtoSplit.split("(?=[,.!?:\\[])");
-    
+
+    words = wordtoSplit.split("(?=[,.!?:\\[])");   
     if (wordtoSplit.equals(""))
         smartList = null;
     else
-    {
-//        for (String word : words)
-//        {
-//            if (word.startsWith("["))
-//            {
-//                wordRep = word;
-//                if (word.contains("]"))
-//                    wordRep = word;
-//            }
-//            if (word.contains("]"))
-//            {
-//                wordRep = wordRep + " " + word;
-//            }
-//            else
-//                wordRep = word;
-//
-//                wordRep = word;
-//                
-//            //smartList.add(wordRep);
-//            
-//            
-//        }
-      
+    {      
         for (String word : words)
             smartList.add(word);
-        //smartList = Arrays.asList(words);
     }
-    return smartList;
-    
+    return smartList;    
 }
 }
 

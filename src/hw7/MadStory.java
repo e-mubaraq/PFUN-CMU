@@ -3,6 +3,16 @@ package hw7;
 import java.io.*;
 import java.util.*;
 
+/**
+ * MadStory is an helper class that sets up, plays and prints the MadLibs game.
+ *
+ * @author Mubarak Mikail
+ * 
+ * Andrew ID: mmikail 
+ *
+ * On my honor, as a Carnegie-Mellon Africa student, I have neither given nor received unauthorized assistance on this work.
+ *
+ */
 public class MadStory
 {
 private LinkedList<String> story = new LinkedList<String>();
@@ -97,9 +107,8 @@ public boolean play(BufferedReader keyboard) throws IOException
     
     // For each MadPrompt taken off the Stack, prompt the user (use Utils.getIndefiniteArticle())
     // then use the entered value to replace the mad word in the story LinkedList.
-    for (i = 0; i <= prompts.size(); i++)
-    {
-        
+    for (i = prompts.size(); i > 0; i--)
+    {       
         p = prompts.pop();
         prompt = p.getPrompt();
         position = p.getPosition();
@@ -111,8 +120,7 @@ public boolean play(BufferedReader keyboard) throws IOException
         // Replace word in the story 
         newWord = MadUtils.replaceMadWord(madWord, str);
         System.out.println("Replaced with " + newWord);
-        System.out.println("***************** put new word in to story");
-        
+        System.out.println("***************** put new word in to story");      
     }
 
     return true;
@@ -142,28 +150,27 @@ public void print(int n)
         
     System.out.println();
     
-    for (String s : story)
-    {
-        i++;
-        if (i % n == 0)
-        {
-            if (MadUtils.getMadWord(s) == null)
-            {
-                System.out.print(i + ": " + s + " " );
-                System.out.println();
-                continue;
-            }
-            else
-            {
-                System.out.print(MadUtils.replaceMadWord(s, "_______"));
-                System.out.println();
-                continue;
-            }
-        }
-        System.out.print(i + ": " + s + " " ); 
-    }
-        
-    System.out.println();
+//    for (String s : story)
+//    {
+//        i++;
+//        if (i % n == 0)
+//        {
+//            if (MadUtils.getMadWord(s) == null)
+//                System.out.print(i + ": " + s + " " );
+//                System.out.println();
+//                continue;
+//            }
+//            else
+//            {
+//                System.out.print(MadUtils.replaceMadWord(s, "_______"));
+//                System.out.println();
+//                continue;
+//            }
+//        }
+//        System.out.print(i + ": " + s + " " ); 
+//    }
+//        
+//    System.out.println();
     
 }
 }

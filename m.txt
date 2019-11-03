@@ -1,4 +1,5 @@
 MadLib: Sick Note
 
-Hello [boss], this is [Mubarak Mikail].
+Hello [boss], this is [person's name].
 
+I think I've got that [stomach] virus that is going around [campus].
