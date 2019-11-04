@@ -94,7 +94,8 @@ public static LinkedList<String> smartSplit(String wordtoSplit)
     String words[];
     LinkedList<String> smartList = new LinkedList<String>();
 
-    words = wordtoSplit.split("(?=[,.!?:\\[])");   
+    //words = wordtoSplit.split("(?=[,.!?:\\[])");   
+    words = wordtoSplit.split(" (?![^\\[]*[\\]])");  
     if (wordtoSplit.equals(""))
         smartList = null;
     else

@@ -12,7 +12,7 @@ public class Mytests
         s2 = s1 + ".,";
         s3 = " That boy. [person's name here] is good";
         s4 = "s4";
-        s5 = "Hello [boss] hhhh, this is [Mubarak Mikail].";
+        s5 = "[stomach]:....!#$king**& virus that is going around [campus].";
         s6 = "";
         
         madWord = MadUtils.getMadWord(s1);

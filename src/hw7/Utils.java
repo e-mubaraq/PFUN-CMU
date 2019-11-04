@@ -50,7 +50,7 @@ public static String buildStringWithPaddedSpace(String word, int n)
 public static String replaceStrWithUnderscores(String word)
 {
     String str = "";
-    str = word.replaceAll("[\\w' ]", "_");
+    str = word.replaceAll("[\\[\\]\\w' ]", "_");
     return str;
 }
 

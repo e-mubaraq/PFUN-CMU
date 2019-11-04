@@ -21,11 +21,15 @@ public class MadLibs
         MadStory story;
         ObjectOutputStream out;
         ObjectInputStream in;
-        String storyFile;
+        File f;
+        String storyFile,fileName, gameOption, printOption;
 
-        String fileName = "MadDictionary.dat";
-        File f = new File(fileName);
-
+        fileName = "MadDictionary.dat";
+        f = new File(fileName);
+        
+//        System.out.print("Enter a 1 to Play MadLibs.\n" + "Enter a 2 to Administer MadLibs.\n");
+//        gameOption = keyboard.readLine();
+        
         if (f.exists())
         {
             in = new ObjectInputStream(new FileInputStream(fileName));
@@ -37,7 +41,11 @@ public class MadLibs
 
         System.out.print("Enter the file name: ");
         storyFile = keyboard.readLine();       
-
+//        while (!storyFile.equals(""))
+//        {
+//            
+//        }
+        
         story = new MadStory();
         story.readFromFile(storyFile);
         //story.print(5);
@@ -52,6 +60,12 @@ public class MadLibs
         out = new ObjectOutputStream(new FileOutputStream(fileName));
         out.writeObject(dictionary);
         out.close();
+        
+//        System.out.print("Enter a 1 to print the MadLib story to the screen.\n" + 
+//                "Enter a 2 to print the MadLib story to a PDF file.");
+//        if(gameOption.equals("1"))
+//            System.out.print("Enter a 3 to play the MadLib.");
+//        printOption = keyboard.readLine();
         
     }
 }
