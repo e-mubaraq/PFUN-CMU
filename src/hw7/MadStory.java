@@ -141,25 +141,24 @@ public boolean play(BufferedReader keyboard) throws IOException
 
 public void print(int n)
 {
-    String madWord, newWord;
+    String madWord;
     int i = 0;
     
     for (String s : story)
     {
         madWord = MadUtils.getMadWord(s);
-        //newWord = MadUtils.replaceMadWord(s, madWord);
         i++;
         if (i % n == 0)
         {
             if (madWord != null)
             {
-                System.out.print(Utils.replaceStrWithUnderscores(s) + " " );     
-                //System.out.println(i + ": " + s + " " );
+                System.out.print(Utils.replaceStrWithUnderscores(s) + " " );
+                
             }
             else
                 System.out.print(s + " " );
             System.out.println();
-            //continue;
+
             
         }
         else
@@ -167,7 +166,7 @@ public void print(int n)
             if (madWord != null)
             {
                 System.out.print(Utils.replaceStrWithUnderscores(s) + " " );  
-                //System.out.print(i + ": " + s + " " );
+                //System.out.println(Utils.buildStringWithPaddedSpace(madWord, n));
             }
             else
                 System.out.print(s + " " );
