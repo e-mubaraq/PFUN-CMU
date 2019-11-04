@@ -30,6 +30,12 @@ public void readFromFile(String filename)
     // read a line of data
     // while input OK
     datafile.open();
+    if(!datafile.isOpen())
+    {
+        System.out.println("can't open " + datafile.getName()
+        + " for reading. File does not exist, program ending");
+        System.exit(1);
+    }
     inword = datafile.readString();    
     while (inword != null)
     {
@@ -149,28 +155,6 @@ public void print(int n)
     }
         
     System.out.println();
-    
-//    for (String s : story)
-//    {
-//        i++;
-//        if (i % n == 0)
-//        {
-//            if (MadUtils.getMadWord(s) == null)
-//                System.out.print(i + ": " + s + " " );
-//                System.out.println();
-//                continue;
-//            }
-//            else
-//            {
-//                System.out.print(MadUtils.replaceMadWord(s, "_______"));
-//                System.out.println();
-//                continue;
-//            }
-//        }
-//        System.out.print(i + ": " + s + " " ); 
-//    }
-//        
-//    System.out.println();
     
 }
 }
