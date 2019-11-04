@@ -141,20 +141,35 @@ public boolean play(BufferedReader keyboard) throws IOException
 
 public void print(int n)
 {
+    String madWord;
     int i = 0;
+    
     for (String s : story)
     {
+        madWord = MadUtils.getMadWord(s);
         i++;
         if (i % n == 0)
         {
-            System.out.print(i + ": " + s + " " );
+            if (madWord != null)
+                System.out.print(Utils.replaceStrWithUnderscores(madWord) + " " );             
+            else
+                System.out.print(i + ": " + s + " " );
             System.out.println();
             continue;
+            
         }
-        System.out.print(i + ": " + s + " " ); 
+        else
+        {
+            if (madWord != null)
+                System.out.print(Utils.replaceStrWithUnderscores(madWord) + " " );             
+            else
+                System.out.print(s + " " );
+        }
+         
     }
         
     System.out.println();
+
     
 }
 }

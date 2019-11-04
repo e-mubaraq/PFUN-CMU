@@ -40,11 +40,11 @@ public class MadLibs
 
         story = new MadStory();
         story.readFromFile(storyFile);
-        story.print(5);
-        story.setupGame(keyboard, dictionary);
         //story.print(5);
-        story.play(keyboard);
-        story.print(8);
+        story.setupGame(keyboard, dictionary);
+        story.print(5);
+        //story.play(keyboard);
+        //story.print(8);
         //dictionary.print();
 
             

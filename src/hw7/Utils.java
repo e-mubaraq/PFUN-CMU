@@ -36,4 +36,22 @@ public static void printStack(Vector<? extends Object> stack)
     }
 }
 
+public static String buildStringWithPaddedSpace(String word, int n)
+{
+    int i;
+    String str = "";
+    for (i = 0; i < n; i++)
+    {
+        str = str + " ";
+    }
+    return str + word;
+}
+
+public static String replaceStrWithUnderscores(String word)
+{
+    String str = "";
+    str = word.replaceAll("[\\w' ]", "_");
+    return str;
+}
+
 }

@@ -39,6 +39,10 @@ public class Mytests
         System.out.println("Test Smart split on s1: " + MadUtils.smartSplit(s1 + " in Africa"));
         System.out.println("Test Smart split on s3: " + MadUtils.smartSplit(s3));
         System.out.println("Test Smart split on s5: " + MadUtils.smartSplit(s5));
+        System.out.println("Test underscore replace on s5: " + Utils.replaceStrWithUnderscores(s5));
+        System.out.println("Test underscore replace on s5: " + Utils.replaceStrWithUnderscores(MadUtils.getMadWord(s5)));
+        
+        System.out.println(Utils.buildStringWithPaddedSpace(s1, 5));
 
         
         
