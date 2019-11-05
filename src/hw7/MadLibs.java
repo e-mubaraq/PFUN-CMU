@@ -3,6 +3,8 @@ package hw7;
 import java.io.*;
 import java.util.*;
 
+import HW1.PlayMath;
+
 /**
  * MadLibs is a program that helps to setup and play the Madlibs game.
   * @author Mubarak Mikail
@@ -27,9 +29,6 @@ public class MadLibs
         fileName = "MadDictionary.dat";
         f = new File(fileName);
         
-        System.out.print("Enter a 1 to Play MadLibs.\n" + "Enter a 2 to Administer MadLibs.\n");
-        gameOption = keyboard.readLine();
-        
         if (f.exists())
         {
             in = new ObjectInputStream(new FileInputStream(fileName));
@@ -38,6 +37,16 @@ public class MadLibs
         }
         else
             System.out.println(fileName + " does not exist.\n");
+        
+        System.out.print("Enter a 1 to Play MadLibs.\n" + "Enter a 2 to Administer MadLibs.\n");
+        gameOption = keyboard.readLine();
+        
+        if(!(gameOption.equals("1") || gameOption.equals("2")))
+        {
+            System.out.println("Please enter a 1 to play or 2 to adminsiter a Madlibs game.");
+            System.out.print("Enter a 1 to Play MadLibs.\n" + "Enter a 2 to Administer MadLibs.\n");
+            gameOption = keyboard.readLine();
+        }
 
         System.out.print("Enter the MadLib file name: ");
         storyFile = keyboard.readLine(); 
@@ -56,6 +65,13 @@ public class MadLibs
                     storyFile = keyboard.readLine();
                     continue;
                 }
+            }
+            else if(!(gameOption.equals("1") || gameOption.equals("2")))
+            {
+                System.out.println("Please enter a 1 to play or 2 to adminsiter a Madlibs game.");
+                System.out.print("Enter a 1 to Play MadLibs.\n" + "Enter a 2 to Administer MadLibs.\n");
+                gameOption = keyboard.readLine();
+                continue;
             }
             else
                 story.setupGame(keyboard, dictionary);
@@ -80,21 +96,7 @@ public class MadLibs
             
             System.out.print("Enter the next MadLib file name: ");
             storyFile = keyboard.readLine();  
-        }
-//        
-//        story = new MadStory();
-//        story.readFromFile(storyFile);
-//        //story.print(5);
-//        story.setupGame(keyboard, dictionary);
-//        story.print(5);
-//        //story.play(keyboard);
-//        //story.print(8);
-//        //dictionary.print();         
-        
-//        out = new ObjectOutputStream(new FileOutputStream(fileName));
-//        out.writeObject(dictionary);
-//        out.close();
-        
+        }        
         
     }
 }

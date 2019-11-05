@@ -21,6 +21,10 @@ private boolean isReady = false;
 private InputDataFile datafile;
 // Read a story from the file.
 
+public boolean isReady()
+{
+    return isReady;
+}
 public void readFromFile(String filename)
 {
     String inword;
@@ -175,7 +179,5 @@ public void print(int n)
     }
         
     System.out.println();
-
-    
 }
 }
