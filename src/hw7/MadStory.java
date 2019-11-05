@@ -2,6 +2,11 @@ package hw7;
 
 import java.io.*;
 import java.util.*;
+import java.util.List;
+import com.itextpdf.text.*;
+import com.itextpdf.text.pdf.PdfWriter;
+
+
 
 /**
  * MadStory is an helper class that sets up, plays and prints the MadLibs game.
@@ -87,10 +92,24 @@ public boolean setupGame(BufferedReader keyboard, MadDictionary dictionary) thro
             // Look up the definition in the dictionary, using your MadUtils.lookupWord() method
             // create a MadPrompt using numWords and the definition
             // add it to the Stack (use the proper method for a Stack)
-            madDef = MadUtils.lookupWord(str, dictionary, keyboard);
+
+            if (keyboard == null)
+            {
+                madDef = MadUtils.lookupWord(str, dictionary);
+                if (madDef == null)
+                    return false;
+            }
+                
+            else
+            {
+                madDef = MadUtils.lookupWord(str, dictionary, keyboard); 
+                p = new MadPrompt(numWords, madDef.toString());
+                prompts.push(p);
+            }
+                
             
-            p = new MadPrompt(numWords, madDef.toString());
-            prompts.push(p);
+//            p = new MadPrompt(numWords, madDef.toString());
+//            prompts.push(p);
         }
     }
     Utils.printStack(prompts);
@@ -143,41 +162,71 @@ public boolean play(BufferedReader keyboard) throws IOException
 // Start by printing the MadWords, then update it to format it into lines of n characters,
 // with the MadWord replaced with underscores and the MadPrompt on the line below.
 
-public void print(int n)
+public void print(int n , MadDictionary dictionary) throws IOException
 {
-    String madWord;
-    int i = 0;
+    StringBuffer madDef = null;
+    String madWordCheck, madWord, definition;
+    String topLine = "";
+    String bottomLine = "";
+    int wordLenght, j, counter = 0;
     
     for (String s : story)
     {
+        wordLenght = s.length();
         madWord = MadUtils.getMadWord(s);
-        i++;
-        if (i % n == 0)
+        counter = counter + wordLenght + 1;
+        
+        
+        if (madWord != null)
         {
-            if (madWord != null)
+            madWordCheck = s.substring(wordLenght - 1);
+            madDef = MadUtils.lookupWord(madWord, dictionary);
+            definition = madDef.toString();
+            if(madWordCheck.equals("]"))
             {
-                System.out.print(Utils.replaceStrWithUnderscores(s) + " " );
-                
+                topLine = topLine + Utils.replaceStrWithUnderscores(definition) + " ";
+                bottomLine = bottomLine +  definition;
             }
             else
-                System.out.print(s + " " );
-            System.out.println();
-
-            
+            {
+                topLine = topLine + Utils.replaceStrWithUnderscores(definition) + madWordCheck + " ";
+                bottomLine = bottomLine + " " + definition;
+            }         
         }
         else
         {
-            if (madWord != null)
+            topLine = topLine + s + " ";
+            
+            for (j = 0; j <= wordLenght; j++)
             {
-                System.out.print(Utils.replaceStrWithUnderscores(s) + " " );  
-                //System.out.println(Utils.buildStringWithPaddedSpace(madWord, n));
+                bottomLine = bottomLine + " ";
             }
-            else
-                System.out.print(s + " " );
-        }
-         
+        }    
     }
-        
-    System.out.println();
+    System.out.println(topLine);
+    System.out.println(bottomLine);
+}
+public void printToPDF()
+{
+    Document document;
+    document = new Document();
+    
+    try
+    {
+       PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream("madword.pdf"));
+       document.open();
+       document.add(new Paragraph("A Hello World PDF document."));
+       document.close();
+       writer.close();
+    } 
+    catch (DocumentException e)
+    {
+       e.printStackTrace();
+    } 
+    catch (FileNotFoundException e)
+    {
+       e.printStackTrace();
+    }
+    
 }
 }

@@ -43,6 +43,9 @@ public class Mytests
         System.out.println("Test underscore replace on s5: " + Utils.replaceStrWithUnderscores(MadUtils.getMadWord(s5)));
         
         System.out.println(Utils.buildStringWithPaddedSpace(s1, 5));
+        System.out.println(Utils.buildPaddedSpace(15));
+        
+        
 
         
         

@@ -56,12 +56,12 @@ public class MadLibs
             story = new MadStory();
             story.readFromFile(storyFile);
             
-            if (gameOption.equals("1"))  
+            if (gameOption.equals("1"))  // user
             {
-                if(!story.setupGame(keyboard, dictionary))
+                if(!story.setupGame(null, dictionary))
                 {
                     System.out.println("MadLib cannot be played until the administrator has set it up.");
-                    System.out.print("Enter the MadLib file name: ");
+                    System.out.print("Enter another MadLib file name: ");
                     storyFile = keyboard.readLine();
                     continue;
                 }
@@ -73,7 +73,7 @@ public class MadLibs
                 gameOption = keyboard.readLine();
                 continue;
             }
-            else
+            else if (gameOption.equals("2"))    //administrator
                 story.setupGame(keyboard, dictionary);
             
             out = new ObjectOutputStream(new FileOutputStream(fileName));
@@ -88,11 +88,14 @@ public class MadLibs
             printOption = keyboard.readLine();
             
             if(printOption.equals("3"))
+            {
+                story.setupGame(keyboard, dictionary);
                 story.play(keyboard);
+            }
             else if (printOption.equals("2"))
-                ;
+                story.printToPDF();
             else if (printOption.equals("1"))
-                story.print(5);
+                story.print(5, dictionary);
             
             System.out.print("Enter the next MadLib file name: ");
             storyFile = keyboard.readLine();  
