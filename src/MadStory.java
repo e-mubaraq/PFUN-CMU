@@ -1,4 +1,4 @@
-package hw7;
+
 
 import java.io.*;
 import java.util.*;
@@ -69,6 +69,7 @@ public void readFromFile(String filename)
     datafile.close();
 }
 
+
 // Set up the game
 
 public boolean setupGame(BufferedReader keyboard, MadDictionary dictionary) throws IOException
@@ -92,11 +93,23 @@ public boolean setupGame(BufferedReader keyboard, MadDictionary dictionary) thro
             // create a MadPrompt using numWords and the definition
             // add it to the Stack (use the proper method for a Stack)
 
-            madDef = MadUtils.lookupWord(str, dictionary, keyboard);
-            if (madDef == null)
-                return false;
-            p = new MadPrompt(numWords, madDef.toString());
-            prompts.push(p);
+            if (keyboard == null)
+            {
+                madDef = MadUtils.lookupWord(str, dictionary);
+                if (madDef == null)
+                    return false;
+            }
+                
+            else
+            {
+                madDef = MadUtils.lookupWord(str, dictionary, keyboard); 
+                p = new MadPrompt(numWords, madDef.toString());
+                prompts.push(p);
+            }
+                
+            
+//            p = new MadPrompt(numWords, madDef.toString());
+//            prompts.push(p);
         }
     }
     Utils.printStack(prompts);
@@ -128,7 +141,6 @@ public boolean play(BufferedReader keyboard) throws IOException
         p = prompts.pop();
         prompt = p.getPrompt();
         position = p.getPosition();
-        
         System.out.print("Please enter " + Utils.getIndefiniteArticle(prompt) + " " + prompt + ": ");
         
         str = keyboard.readLine();
@@ -136,7 +148,8 @@ public boolean play(BufferedReader keyboard) throws IOException
         
         // Replace word in the story 
         newWord = MadUtils.replaceMadWord(madWord, str);
-        story.set(position - 1, newWord);     
+        System.out.println("Replaced with " + newWord);
+        System.out.println("***************** put new word in to story");      
     }
 
     return true;
@@ -149,14 +162,13 @@ public boolean play(BufferedReader keyboard) throws IOException
 // Start by printing the MadWords, then update it to format it into lines of n characters,
 // with the MadWord replaced with underscores and the MadPrompt on the line below.
 
-public void print(int n)
+public void print(int n , MadDictionary dictionary) throws IOException
 {
-    MadPrompt p;
-    Stack<MadPrompt> p2 = new Stack<MadPrompt>();
+    StringBuffer madDef = null;
     String madWordCheck, madWord, definition;
     String topLine = "";
     String bottomLine = "";
-    int wordLenght, i, j, counter = 0;
+    int wordLenght, j, counter = 0;
     
     for (String s : story)
     {
@@ -164,38 +176,42 @@ public void print(int n)
         madWord = MadUtils.getMadWord(s);
         counter = counter + wordLenght + 1;
         
-        for (i = prompts.size(); i > 0; i--)
-        {       
-            p = prompts.pop();        
-            p2.push(p);     
-        }
+//        if ((counter >= n) || s.equals(""))
+//        {
+//            System.out.println(topLine);
+//            System.out.println(bottomLine);
+//            System.out.println();
+//            topLine = "";
+//            bottomLine = "";
+//            counter = 0;
+//        }
         
-        if ((counter >= n) || s.equals(""))
+        if (s.equals(""))
         {
             System.out.println(topLine);
             System.out.println(bottomLine);
             System.out.println();
-            if (madWord != null)
-            {
-                topLine = madWord + " ";
-                bottomLine = Utils.buildPaddedSpace(madWord.length());
-                counter = wordLenght; 
-            }
-            else
-            {
-                topLine = s + " ";
-                bottomLine = Utils.buildPaddedSpace(wordLenght);
-                counter = wordLenght;
-            }          
-        }       
+            topLine = "";
+            bottomLine = "";
+            counter = 0;
+        }
+        else if (counter >= n)
+        {
+            System.out.println(topLine);
+            System.out.println(bottomLine);
+            System.out.println();
+            //topLine
+            bottomLine = "";
+            counter = s.length();
+        }
+        
         else
         {
             if (madWord != null)
             {
                 madWordCheck = s.substring(wordLenght - 1);
-                p = p2.pop();
-                definition = p.getPrompt();               
-                
+                madDef = MadUtils.lookupWord(madWord, dictionary);
+                definition = madDef.toString();
                 if(madWordCheck.equals("]"))
                 {
                     topLine = topLine + Utils.replaceStrWithUnderscores(definition) + " ";
@@ -209,7 +225,8 @@ public void print(int n)
             }
             else
             {
-                topLine = topLine + s + " ";               
+                topLine = topLine + s + " ";
+                
                 for (j = 0; j <= wordLenght; j++)
                 {
                     bottomLine = bottomLine + " ";
@@ -222,112 +239,16 @@ public void print(int n)
     System.out.println();
 }
 
-public void printAfterPlay(int n)
-{
-    String topLine = "";   
-    int wordLenght, counter = 0;
-    
-    for (String s : story)
-    {
-        wordLenght = s.length();
-        counter = counter + wordLenght + 1;
-        if ((counter >= n) || s.equals(""))
-        {
-            System.out.println(topLine);
-            System.out.println();
-            topLine = s + " ";
-            counter = wordLenght;        
-        }       
-        else
-        {
-            topLine = topLine + s + " ";  
-        }
-    }
-    System.out.println(topLine);
-    System.out.println();
-}
-
-public void printPDF(int n)
+public void printToPDF()
 {
     Document document;
     document = new Document();
     
-    MadPrompt p;
-    Stack<MadPrompt> p2 = new Stack<MadPrompt>();
-    String madWordCheck, madWord, definition;
-    String topLine = "";
-    String bottomLine = "";
-    int wordLenght, i, j, counter = 0;
-    
     try
     {
        PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream("madword.pdf"));
-       document.open();       
-       
-       for (String s : story)
-       {
-           wordLenght = s.length();
-           madWord = MadUtils.getMadWord(s);
-           counter = counter + wordLenght + 1;
-           
-           for (i = prompts.size(); i > 0; i--)
-           {       
-               p = prompts.pop();        
-               p2.push(p);     
-           }
-           
-           if ((counter >= n) || s.equals(""))
-           {
-               document.add(new Paragraph(topLine));
-               document.add(new Paragraph(bottomLine));
-               document.add(new Paragraph());
-               if (madWord != null)
-               {
-                   topLine = madWord + " ";
-                   bottomLine = Utils.buildPaddedSpace(madWord.length());
-                   counter = wordLenght; 
-               }
-               else
-               {
-                   topLine = s + " ";
-                   bottomLine = Utils.buildPaddedSpace(wordLenght);
-                   counter = wordLenght;
-               }          
-           }       
-           else
-           {
-               if (madWord != null)
-               {
-                   madWordCheck = s.substring(wordLenght - 1);
-                   p = p2.pop();
-                   definition = p.getPrompt();               
-                   
-                   if(madWordCheck.equals("]"))
-                   {
-                       topLine = topLine + Utils.replaceStrWithUnderscores(definition) + " ";
-                       bottomLine = bottomLine +  definition + " ";
-                   }
-                   else
-                   {
-                       topLine = topLine + Utils.replaceStrWithUnderscores(definition) + madWordCheck + " ";
-                       bottomLine = bottomLine + definition + " ";
-                   }         
-               }
-               else
-               {
-                   topLine = topLine + s + " ";               
-                   for (j = 0; j <= wordLenght; j++)
-                   {
-                       bottomLine = bottomLine + " ";
-                   }
-               }    
-           }
-       }
-       document.add(new Paragraph(topLine));
-       document.add(new Paragraph(bottomLine));
-       document.add(new Paragraph());
-       
-       
+       document.open();
+       document.add(new Paragraph("A Hello World PDF document."));
        document.close();
        writer.close();
     } 
@@ -338,7 +259,7 @@ public void printPDF(int n)
     catch (FileNotFoundException e)
     {
        e.printStackTrace();
-    }    
+    }
+    
 }
-
 }

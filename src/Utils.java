@@ -1,4 +1,4 @@
-package hw7;
+
 
 import java.util.*;
 
@@ -56,13 +56,7 @@ public static String buildPaddedSpace(int n)
     }
     return str;
 }
-public static String printIfNotEmpty(String word)
-{
-    String str = "";
-    if (!word.isEmpty())
-        return str = word;
-    return str;  
-}
+
 public static String replaceStrWithUnderscores(String word)
 {
     String str = "";
