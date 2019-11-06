@@ -56,12 +56,12 @@ public static String buildPaddedSpace(int n)
     }
     return str;
 }
-public static String printIfNotEmpty(String word)
+public static void printIfNotEmpty(String word)
 {
     String str = "";
+    str = word;
     if (!word.isEmpty())
-        return str = word;
-    return str;  
+        System.out.println(str); 
 }
 public static String replaceStrWithUnderscores(String word)
 {
