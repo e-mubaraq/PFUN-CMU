@@ -11,10 +11,9 @@ import com.itextpdf.text.pdf.PdfWriter;
  *
  * @author Mubarak Mikail
  * 
- *         Andrew ID: mmikail
+ * Andrew ID: mmikail
  *
- *         On my honor, as a Carnegie-Mellon Africa student, I have neither
- *         given nor received unauthorized assistance on this work.
+ * On my honor, as a Carnegie-Mellon Africa student, I have neither given nor received unauthorized assistance on this work.
  *
  */
 public class MadStory
@@ -41,8 +40,7 @@ public class MadStory
         datafile.open();
         if (!datafile.isOpen())
         {
-            System.out
-                    .println("can't open " + datafile.getName() + " for reading. File does not exist, program ending");
+            System.out.println("can't open " + datafile.getName() + " for reading. File does not exist, program ending");
             System.exit(1);
         }
         inword = datafile.readString();
@@ -111,7 +109,7 @@ public class MadStory
     {
         String str, prompt, madWord, newWord;
         MadPrompt p;
-        int i, position;
+        int position;
 
         if (!isReady)
             return false;
@@ -125,7 +123,7 @@ public class MadStory
         // For each MadPrompt taken off the Stack, prompt the user (use
         // Utils.getIndefiniteArticle())
         // then use the entered value to replace the mad word in the story LinkedList.
-        for (i = prompts.size(); i > 0; i--)
+        while (!prompts.isEmpty())
         {
             p = prompts.pop();
             prompt = p.getPrompt();
@@ -158,64 +156,66 @@ public class MadStory
         String madWordCheck, madWord, definition;
         String topLine = "";
         String bottomLine = "";
-        int wordLenght, i, j, counter = 0;
+        int wordLenght, j, counter = 0;
 
         while (!prompts.isEmpty())
         {
             p = prompts.pop();
             p2.push(p);
         }
-
-        for (String s : story)
+        
+        if (p2.isEmpty())
+            printOtherwise(n);
+        else
         {
-            wordLenght = s.length();
-            
-            counter = counter + wordLenght + 1;
-
-            if ((counter >= n) || s.equals(""))
+            for (String s : story)
             {
-                Utils.printIfNotEmpty(topLine);
-                Utils.printIfNotEmpty(bottomLine);
-                System.out.println();
-                topLine = "";
-                bottomLine = "";
-                counter = 0;
-                if (s.equals(""))
-                    continue;
-            }
-            madWord = MadUtils.getMadWord(s);
-            if (madWord != null) // it is a madword
-            {
-                madWordCheck = s.substring(wordLenght - 1);
-                p = p2.pop();
-                definition = p.getPrompt();
-
-                if (madWordCheck.equals("]"))
+                wordLenght = s.length();               
+                counter = counter + wordLenght + 1;   
+                if ((counter >= n) || s.equals(""))
                 {
-                    topLine = topLine + Utils.replaceStrWithUnderscores(definition) + " ";
-                    bottomLine = bottomLine + definition + " ";
+                    Utils.printIfNotEmpty(topLine);
+                    Utils.printIfNotEmpty(bottomLine);
+                    System.out.println();
+                    topLine = "";
+                    bottomLine = "";
+                    counter = 0;
+                    if (s.equals(""))
+                        continue;
+                }
+                madWord = MadUtils.getMadWord(s);
+                if (madWord != null) // it is a madword
+                {
+                    madWordCheck = s.substring(wordLenght - 1);
+                    p = p2.pop();
+                    definition = p.getPrompt(); 
+                    if (madWordCheck.equals("]"))
+                    {
+                        topLine = topLine + Utils.replaceStrWithUnderscores(definition) + " ";
+                        bottomLine = bottomLine + definition + " ";
+                    }
+                    else
+                    {
+                        topLine = topLine + Utils.replaceStrWithUnderscores(definition) + madWordCheck + " ";
+                        bottomLine = bottomLine + definition + " " + " "; // needs an extra space for the punctuaution
+                    }
                 }
                 else
                 {
-                    topLine = topLine + Utils.replaceStrWithUnderscores(definition) + madWordCheck + " ";
-                    bottomLine = bottomLine + definition + " " + " "; // needs an extra space for the punctuaution
+                    topLine = topLine + s + " ";
+                    for (j = 0; j <= wordLenght; j++)
+                    {
+                        bottomLine = bottomLine + " ";
+                    }
                 }
             }
-            else
-            {
-                topLine = topLine + s + " ";
-                for (j = 0; j <= wordLenght; j++)
-                {
-                    bottomLine = bottomLine + " ";
-                }
-            }
+            System.out.println(topLine);
+            System.out.println(bottomLine);
+            System.out.println();
         }
-        System.out.println(topLine);
-        System.out.println(bottomLine);
-        System.out.println();
     }
 
-    public void printAfterPlay(int n)
+    public void printOtherwise(int n)
     {
         String topLine = "";
         int wordLenght, counter = 0;
@@ -226,15 +226,14 @@ public class MadStory
             counter = counter + wordLenght + 1;
             if ((counter >= n) || s.equals(""))
             {
-                System.out.println(topLine);
+                Utils.printIfNotEmpty(topLine);
                 System.out.println();
-                topLine = s + " ";
-                counter = wordLenght;
+                topLine = "";
+                counter = 0;
+                if (s.equals(""))
+                    continue;
             }
-            else
-            {
-                topLine = topLine + s + " ";
-            }
+            topLine = topLine + s + " ";
         }
         System.out.println(topLine);
         System.out.println();
@@ -250,72 +249,64 @@ public class MadStory
         String madWordCheck, madWord, definition;
         String topLine = "";
         String bottomLine = "";
-        int wordLenght, i, j, counter = 0;
+        int wordLenght, j, counter = 0;
 
         try
         {
             PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream("madword.pdf"));
             document.open();
 
+            while (!prompts.isEmpty())
+            {
+                p = prompts.pop();
+                p2.push(p);
+            }
+
             for (String s : story)
             {
                 wordLenght = s.length();
-                madWord = MadUtils.getMadWord(s);
+                
                 counter = counter + wordLenght + 1;
-
-                for (i = prompts.size(); i > 0; i--)
-                {
-                    p = prompts.pop();
-                    p2.push(p);
-                }
 
                 if ((counter >= n) || s.equals(""))
                 {
                     document.add(new Paragraph(topLine));
                     document.add(new Paragraph(bottomLine));
                     document.add(new Paragraph());
-                    if (madWord != null)
+                    topLine = "";
+                    bottomLine = "";
+                    counter = 0;
+                    if (s.equals(""))
+                        continue;
+                }
+                madWord = MadUtils.getMadWord(s);
+                if (madWord != null) // it is a madword
+                {
+                    madWordCheck = s.substring(wordLenght - 1);
+                    p = p2.pop();
+                    definition = p.getPrompt();
+
+                    if (madWordCheck.equals("]"))
                     {
-                        topLine = madWord + " ";
-                        bottomLine = Utils.buildPaddedSpace(madWord.length());
-                        counter = wordLenght;
+                        topLine = topLine + Utils.replaceStrWithUnderscores(definition) + " ";
+                        bottomLine = bottomLine + definition + " ";
                     }
                     else
                     {
-                        topLine = s + " ";
-                        bottomLine = Utils.buildPaddedSpace(wordLenght);
-                        counter = wordLenght;
+                        topLine = topLine + Utils.replaceStrWithUnderscores(definition) + madWordCheck + " ";
+                        bottomLine = bottomLine + definition + " " + " "; // needs an extra space for the punctuaution
                     }
                 }
                 else
                 {
-                    if (madWord != null)
+                    topLine = topLine + s + " ";
+                    for (j = 0; j <= wordLenght; j++)
                     {
-                        madWordCheck = s.substring(wordLenght - 1);
-                        p = p2.pop();
-                        definition = p.getPrompt();
-
-                        if (madWordCheck.equals("]"))
-                        {
-                            topLine = topLine + Utils.replaceStrWithUnderscores(definition) + " ";
-                            bottomLine = bottomLine + definition + " ";
-                        }
-                        else
-                        {
-                            topLine = topLine + Utils.replaceStrWithUnderscores(definition) + madWordCheck + " ";
-                            bottomLine = bottomLine + definition + " ";
-                        }
-                    }
-                    else
-                    {
-                        topLine = topLine + s + " ";
-                        for (j = 0; j <= wordLenght; j++)
-                        {
-                            bottomLine = bottomLine + " ";
-                        }
+                        bottomLine = bottomLine + " ";
                     }
                 }
-            }
+            }          
+            
             document.add(new Paragraph(topLine));
             document.add(new Paragraph(bottomLine));
             document.add(new Paragraph());

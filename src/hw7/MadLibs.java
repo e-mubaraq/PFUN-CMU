@@ -1,17 +1,16 @@
 package hw7;
-
 import java.io.*;
 import java.util.*;
 
 /**
  * MadLibs is a program that helps to setup and play the Madlibs game.
-  * @author Mubarak Mikail
- * 
+ * @author Mubarak Mikail
  * Andrew ID: mmikail 
  *
  * On my honor, as a Carnegie-Mellon Africa student, I have neither given nor received unauthorized assistance on this work.
  *
  */
+
 public class MadLibs
 {
     public static void main(String[] args) throws IOException, ClassNotFoundException
@@ -34,26 +33,26 @@ public class MadLibs
             in.close();
         }
         else
-            System.out.println(fileName + " does not exist.\n");
+            System.out.println("Dictionary file does not exist.\n");
         
         System.out.print("Enter a 1 to Play MadLibs.\n" + "Enter a 2 to Administer MadLibs.\n");
         gameOption = keyboard.readLine();
-        
-        if(!(gameOption.equals("1") || gameOption.equals("2")))
-        {
-            System.out.println("Please enter a 1 to play or 2 to adminsiter a Madlibs game.");
-            System.out.print("Enter a 1 to Play MadLibs.\n" + "Enter a 2 to Administer MadLibs.\n");
-            gameOption = keyboard.readLine();
-        }
 
         System.out.print("Enter the MadLib file name: ");
         storyFile = keyboard.readLine(); 
         
         while (!storyFile.equals(""))
         {
+            f = new File(storyFile);
+            if (!f.exists())
+            {
+                System.out.print("Enter a MadLib file name that exists: ");
+                storyFile = keyboard.readLine(); 
+            }
             story = new MadStory();
             story.readFromFile(storyFile);
             
+            story.print(80);  //prints the madlibs story that was passed in from the story file.
             if (gameOption.equals("1"))  // user
             {
                 if(!story.setupGame(null, dictionary))
@@ -82,21 +81,16 @@ public class MadLibs
                 if(printOption.equals("3"))
                 {
                     story.play(keyboard);
-                    story.printAfterPlay(80);
+                    story.print(80);
                 }
                 else if (printOption.equals("2"))
                     story.printPDF(80);
                 else if (printOption.equals("1"))
                     story.print(80);
-                else
-                {
-                    System.out.print("Enter a 1 to print the MadLib story to the screen.\n" + 
-                            "Enter a 2 to print the MadLib story to a PDF file.\n" + "Enter a 3 to play the MadLib.\n");
-                    printOption = keyboard.readLine();
-                    continue;
-                }
+                else               
+                    break;               
             }
-            if (gameOption.equals("2"))
+            else if (gameOption.equals("2"))
             {
                 System.out.print("Enter a 1 to print the MadLib story to the screen.\n" + 
                         "Enter a 2 to print the MadLib story to a PDF file.\n");
@@ -105,21 +99,17 @@ public class MadLibs
                     story.print(80);
                 else if (printOption.equals("2"))
                     story.printPDF(80);
-                else
-                {
-                    System.out.print("Enter a 1 to print the MadLib story to the screen.\n" + 
-                            "Enter a 2 to print the MadLib story to a PDF file.\n");
-                    printOption = keyboard.readLine();
-                    continue;
-                }
+                else               
+                    break;  
             }
+            
             System.out.print("Enter the next MadLib file name: ");
-            storyFile = keyboard.readLine();  
+            storyFile = keyboard.readLine();
         }
         
         out = new ObjectOutputStream(new FileOutputStream(fileName));
         out.writeObject(dictionary);
-        out.close();
-        
+        out.close();        
     }
+
 }
