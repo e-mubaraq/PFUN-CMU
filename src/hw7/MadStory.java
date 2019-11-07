@@ -4,6 +4,7 @@ import java.io.*;
 import java.util.*;
 import java.util.List;
 import com.itextpdf.text.*;
+import com.itextpdf.text.Font.FontFamily;
 import com.itextpdf.text.pdf.PdfWriter;
 
 /**
@@ -35,12 +36,14 @@ public class MadStory
         List<String> wordList;
 
         datafile = new InputDataFile(filename);
+        story.clear();
         // read a line of data
         // while input OK
         datafile.open();
         if (!datafile.isOpen())
         {
-            System.out.println("can't open " + datafile.getName() + " for reading. File does not exist, program ending");
+            System.out
+                    .println("can't open " + datafile.getName() + " for reading. File does not exist, program ending");
             System.exit(1);
         }
         inword = datafile.readString();
@@ -79,6 +82,7 @@ public class MadStory
 
         // Iterate through the story
 
+        prompts.clear();
         for (String word : story)
         {
             numWords++;
@@ -98,7 +102,7 @@ public class MadStory
                 prompts.push(p);
             }
         }
-        Utils.printStack(prompts);
+        //Utils.printStack(prompts);
         isReady = true;
         return true;
     }
@@ -163,15 +167,15 @@ public class MadStory
             p = prompts.pop();
             p2.push(p);
         }
-        
+
         if (p2.isEmpty())
             printOtherwise(n);
         else
         {
             for (String s : story)
             {
-                wordLenght = s.length();               
-                counter = counter + wordLenght + 1;   
+                wordLenght = s.length();
+                counter = counter + wordLenght + 1;
                 if ((counter >= n) || s.equals(""))
                 {
                     Utils.printIfNotEmpty(topLine);
@@ -188,7 +192,7 @@ public class MadStory
                 {
                     madWordCheck = s.substring(wordLenght - 1);
                     p = p2.pop();
-                    definition = p.getPrompt(); 
+                    definition = p.getPrompt();
                     if (madWordCheck.equals("]"))
                     {
                         topLine = topLine + Utils.replaceStrWithUnderscores(definition) + " ";
@@ -265,13 +269,13 @@ public class MadStory
             for (String s : story)
             {
                 wordLenght = s.length();
-                
+
                 counter = counter + wordLenght + 1;
 
                 if ((counter >= n) || s.equals(""))
                 {
-                    document.add(new Paragraph(topLine));
-                    document.add(new Paragraph(bottomLine));
+                    document.add(new Paragraph(topLine, new Font(FontFamily.COURIER , 11)));
+                    document.add(new Paragraph(bottomLine, new Font(FontFamily.COURIER, 11)));
                     document.add(new Paragraph());
                     topLine = "";
                     bottomLine = "";
@@ -305,10 +309,10 @@ public class MadStory
                         bottomLine = bottomLine + " ";
                     }
                 }
-            }          
-            
-            document.add(new Paragraph(topLine));
-            document.add(new Paragraph(bottomLine));
+            }
+
+            document.add(new Paragraph(topLine, new Font(FontFamily.COURIER, 11)));
+            document.add(new Paragraph(bottomLine, new Font(FontFamily.COURIER, 11)));
             document.add(new Paragraph());
 
             document.close();

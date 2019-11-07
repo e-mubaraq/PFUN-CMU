@@ -17,57 +17,60 @@ public class Utils
 
 // Return "a" or "an", which ever matches wordToCheck
 
-public static String getIndefiniteArticle(String wordToCheck)
-{
-    if (wordToCheck.matches("^[aeiou].*$"))
-        return "an";
-    return "a";
-}
+    public static String getIndefiniteArticle(String wordToCheck)
+    {
+        if (wordToCheck.matches("^[aeiouAEIOU].*$"))
+            return "an";
+        return "a";
+    }
 
 // This method will print a Stack as a Vector
 
-public static void printStack(Vector<? extends Object> stack)
-{
-    int i = 0;
-    for (Object e : stack)
+    public static void printStack(Vector<? extends Object> stack)
     {
-        System.out.println("Entry " + i + ": " + e);
-        i++;
+        int i = 0;
+        for (Object e : stack)
+        {
+            System.out.println("Entry " + i + ": " + e);
+            i++;
+        }
     }
-}
 
-public static String buildStringWithPaddedSpace(String word, int n)
-{
-    int i;
-    String str = "";
-    for (i = 0; i < n; i++)
+    public static String buildStringWithPaddedSpace(String word, int n)
     {
-        str = str + " ";
+        int i;
+        String str = "";
+        for (i = 0; i < n; i++)
+        {
+            str = str + " ";
+        }
+        return str + word;
     }
-    return str + word;
-}
-public static String buildPaddedSpace(int n)
-{
-    int i;
-    String str = "";
-    for (i = 0; i < n; i++)
+
+    public static String buildPaddedSpace(int n)
     {
-        str = str + " ";
+        int i;
+        String str = "";
+        for (i = 0; i < n; i++)
+        {
+            str = str + " ";
+        }
+        return str;
     }
-    return str;
-}
-public static void printIfNotEmpty(String word)
-{
-    String str = "";
-    str = word;
-    if (!word.isEmpty())
-        System.out.println(str); 
-}
-public static String replaceStrWithUnderscores(String word)
-{
-    String str = "";
-    str = word.replaceAll("[\\[\\]\\w' ]", "_");
-    return str;
-}
+
+    public static void printIfNotEmpty(String word)
+    {
+        String str = "";
+        str = word;
+        if (!word.isEmpty())
+            System.out.println(str);
+    }
+
+    public static String replaceStrWithUnderscores(String word)
+    {
+        String str = "";
+        str = word.replaceAll("[\\[\\]\\w' ]", "_");
+        return str;
+    }
 
 }

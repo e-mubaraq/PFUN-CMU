@@ -30,7 +30,7 @@ public class Mytests
         madWord = MadUtils.getMadWord(s5);
         System.out.println(s5 +  " MadWord is " + madWord);
         
-        s1 = "apple";
+        s1 = "Apple";
         System.out.println(Utils.getIndefiniteArticle(s1) + " " + s1);
         
         s1 = "coffee";

@@ -15,7 +15,7 @@ import java.util.*;
 public class MadDictionary implements Serializable
 {
     private HashMap<String, StringBuffer> madWords;
-    
+
     public MadDictionary()
     {
         madWords = new HashMap<String, StringBuffer>();
@@ -48,7 +48,7 @@ public class MadDictionary implements Serializable
             System.out.println("Word: " + key + "      Definition: " + madWords.get(key));
         }
     }
-    
+
     public String toString()
     {
         return "There are " + madWords.size() + "entries in the Mad Dictionary";
