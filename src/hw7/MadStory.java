@@ -22,7 +22,7 @@ public class MadStory
     private LinkedList<String> story = new LinkedList<String>();
     private Stack<MadPrompt> prompts = new Stack<MadPrompt>();
     private boolean isReady = false;
-    private InputDataFile datafile;
+
 // Read a story from the file.
 
     public boolean isReady()
@@ -32,6 +32,7 @@ public class MadStory
 
     public void readFromFile(String filename)
     {
+        InputDataFile datafile;
         String inword;
         List<String> wordList;
 
@@ -326,6 +327,13 @@ public class MadStory
         {
             e.printStackTrace();
         }
+    }
+    public String toString()
+    {
+        String text = "";
+        
+        text = "A MadStory for the MadLibs game";
+        return text;
     }
 
 }
