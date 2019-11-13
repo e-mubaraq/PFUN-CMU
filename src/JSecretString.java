@@ -1,6 +1,6 @@
-package hw4;
 
 import java.util.*;
+import javax.swing.JLabel;
 
 /**
  * This program holds a secret string
@@ -17,40 +17,47 @@ import java.util.*;
  *
  */
 
-public class SecretString
+public class JSecretString extends JLabel
 {
     private String secretPhrase;
-
     private String displayString;
 
-    public SecretString()
+    public JSecretString()
     {
         secretPhrase = "";
         displayString = "";
     }
 
-    public SecretString(String secret)
+    public JSecretString(String secret)
     {
         secretPhrase = secret;
         displayString = secretPhrase.replaceAll("[A-Za-z]", "_");
+        setText(displayString);
     }
 
     public void setSecretPhrase(String secret)
     {
         secretPhrase = secret;
         displayString = secretPhrase.replaceAll("[A-Za-z]", "_");
-    }
-
-    public String toString()
-    {
-        return displayString;
+        setText(displayString);
     }
 
     public boolean equals(String display)
     {
         return display.equalsIgnoreCase(secretPhrase);
     }
+    public boolean isUncovered()
+    {
+        if (displayString.equals(secretPhrase))
+            return true;
+        return false;     
+    }
 
+    public void unCoverAll()
+    {
+        setText(secretPhrase);
+    }
+    
     public int reveal(String match)
     {
         int count = 0;
@@ -74,6 +81,12 @@ public class SecretString
                 }
             }
         }
+        setText(displayString);
         return count;
+    }
+    
+    public String toString()
+    {
+        return displayString;
     }
 }
