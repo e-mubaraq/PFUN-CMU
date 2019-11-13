@@ -13,7 +13,7 @@ import java.awt.*;
 import java.io.*;
 import java.util.ArrayList;
 
-public class HangedmanGUI extends LayoutGUI implements StringHandler
+public class HangmanGUI extends LayoutGUI implements StringHandler
 {
     private ArrayList<SingleUseButton> letterButtons;
     private PhraseList listOfPhrases;
@@ -30,14 +30,14 @@ public class HangedmanGUI extends LayoutGUI implements StringHandler
     private JLabel numLost = new JLabel(String.valueOf(numOfLoss));
     private JLabel numGames = new JLabel(String.valueOf(numOfGames));
     
-    public HangedmanGUI()
+    public HangmanGUI()
     {
         filename = "names.txt";
         listOfPhrases = new PhraseList(filename);
         randomPhrase = listOfPhrases.getRandomPhrase();
     }
 
-    public HangedmanGUI(String file)
+    public HangmanGUI(String file)
     {
         File f = new File(file);
         if (!f.exists())
@@ -141,7 +141,7 @@ public class HangedmanGUI extends LayoutGUI implements StringHandler
 
         
         hangedManPanel.setLayout(new BorderLayout());
-        hangedManPanel.setBackground(Color.RED);
+        hangedManPanel.setBackground(Color.ORANGE);
         hangedManPanel.add(hMan);
         
         c.setLayout(new FlowLayout());

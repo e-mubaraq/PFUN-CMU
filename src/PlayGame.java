@@ -2,8 +2,6 @@ import java.awt.*;
 import java.io.*;
 import javax.swing.JFrame;
 
-import hw4.PhraseList;
-import hw4.SecretString;
 /**
  * This program runs the GUI for the Hangman game by playing the game
  *
@@ -21,12 +19,9 @@ public class PlayGame
     {
         final LayoutGUI gui; 
         if (args.length == 0)
-            gui = new HangedmanGUI();
+            gui = new HangmanGUI();
         else
-            gui = new HangedmanGUI(args[0]);
-                         
-        
-        //gui = new HangedManGUI(filename);
+            gui = new HangmanGUI(args[0]);                        
 
         // Note: this is an anonymous inner-class that extends the Runnable class
         //       and overrides the run() method.
