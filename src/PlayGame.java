@@ -4,25 +4,29 @@ import javax.swing.JFrame;
 
 import hw4.PhraseList;
 import hw4.SecretString;
-
+/**
+ * This program runs the GUI for the Hangman game by playing the game
+ *
+ * @author Mubarak Mikail
+ * Andrew ID: mmikail 
+ *
+ * On my honor, as a Carnegie-Mellon Africa student, I have neither given nor received unauthorized assistance on this work.
+ *
+ */
 
 public class PlayGame
 {
 
     public static void main(String[] args) throws IOException
     {
-//        String filename;
-//        if (args.length == 0)
-//            filename = "names.txt";
-//        else
-//            filename = args[0];
-//
-//        PhraseList listOfPhrases = new PhraseList(filename);
-//        SecretString secretPhrase = new SecretString();
+        final LayoutGUI gui; 
+        if (args.length == 0)
+            gui = new HangedmanGUI();
+        else
+            gui = new HangedmanGUI(args[0]);
+                         
         
-        final LayoutGUI gui;       
-        
-        gui = new HangedManGUI();
+        //gui = new HangedManGUI(filename);
 
         // Note: this is an anonymous inner-class that extends the Runnable class
         //       and overrides the run() method.

@@ -30,10 +30,6 @@ public class PhraseList
         readFile(filename);
     }
 
-    public void setPhraseList()
-    {
-        
-    }
     public void readFile(String filename)
     {
         String input;

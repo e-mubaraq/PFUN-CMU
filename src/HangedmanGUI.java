@@ -1,13 +1,26 @@
+/**
+ * This class represents the GUI for an Hangman game
+ *
+ * @author Mubarak Mikail
+ * Andrew ID: mmikail 
+ *
+ * On my honor, as a Carnegie-Mellon Africa student, I have neither given nor received unauthorized assistance on this work.
+ *
+ */
 import javax.swing.*;
+
 import java.awt.*;
+import java.io.*;
 import java.util.ArrayList;
 
-public class HangedManGUI extends LayoutGUI implements StringHandler
+public class HangedmanGUI extends LayoutGUI implements StringHandler
 {
     private ArrayList<SingleUseButton> letterButtons;
-    SingleUseButton replayButton;
-    HangedMan hMan;
+    private PhraseList listOfPhrases;
+    private SingleUseButton replayButton;
+    private HangedMan hMan;
     private JSecretString phrase;
+    private String filename, randomPhrase;;
     
     private int numOfWins = 0;
     private int numOfLoss = 0;
@@ -17,7 +30,36 @@ public class HangedManGUI extends LayoutGUI implements StringHandler
     private JLabel numLost = new JLabel(String.valueOf(numOfLoss));
     private JLabel numGames = new JLabel(String.valueOf(numOfGames));
     
+    public HangedmanGUI()
+    {
+        filename = "names.txt";
+        listOfPhrases = new PhraseList(filename);
+        randomPhrase = listOfPhrases.getRandomPhrase();
+    }
 
+    public HangedmanGUI(String file)
+    {
+        File f = new File(file);
+        if (!f.exists())
+        {
+            file = "names.txt";
+        }
+        filename = file;
+        listOfPhrases = new PhraseList(file);
+        randomPhrase = listOfPhrases.getRandomPhrase();
+    }
+    
+    public void setPhraseList(String file)
+    {
+        File f = new File(file);
+        if (!f.exists())
+        {
+            file = "names.txt";
+        }
+        filename = file;
+        listOfPhrases = new PhraseList(file);
+        randomPhrase = listOfPhrases.getRandomPhrase();
+    }
     public void processString(String text)
     {
         int i;
@@ -26,7 +68,7 @@ public class HangedManGUI extends LayoutGUI implements StringHandler
         {
             for (i = 0; i < letterButtons.size(); i++ )
                 letterButtons.get(i).setEnabled(true); 
-            phrase.setSecretPhrase("Ballack");
+            phrase.setSecretPhrase(listOfPhrases.getRandomPhrase());
             hMan.reset();
             return;
         }
@@ -45,13 +87,11 @@ public class HangedManGUI extends LayoutGUI implements StringHandler
             {
                 phrase.unCoverAll();
                 numOfLoss++;
-                System.out.println("You won this round");
             }
             
             if (phrase.isUncovered())            
             {
                 numOfWins++;
-                System.out.println("You lost this round");
             }
             numOfGames++;
             numWins.setText(String.valueOf(numOfWins));
@@ -69,11 +109,13 @@ public class HangedManGUI extends LayoutGUI implements StringHandler
         JLabel won = new JLabel("<html><u>WON</u></html>");
         JLabel lost = new JLabel("<html><u>LOST</u></html>");
 
-        phrase = new JSecretString("Mubarak!!!");
+        phrase = new JSecretString(randomPhrase);
+        phrase.setFont(new Font("SANS_SERIF", 12, 30));
         
         JPanel mainPanel = new JPanel();
         JPanel hangedManPanel = new JPanel();
         JPanel gameLabelPanel = new JPanel();
+        JPanel gPanel = new JPanel();
         JPanel letterButtonPanel = new JPanel();
         JPanel stringShowPanel = new JPanel();
 
@@ -84,18 +126,22 @@ public class HangedManGUI extends LayoutGUI implements StringHandler
         letterButtons = SingleUseButton.getLetterButtons(this);
 
 
+        gPanel.setLayout(new GridLayout(2, 2));
+        gPanel.setBackground(Color.WHITE);
+        gPanel.add(won);
+        gPanel.add(lost);
+        gPanel.add(numWins);
+        gPanel.add(numLost);
         
-        gameLabelPanel.setLayout(new GridLayout(3, 2));
-        //gameLabelPanel.setBackground(Color.WHITE);
+        gameLabelPanel.setLayout(new GridLayout(2, 2));
+        gameLabelPanel.setBackground(Color.WHITE);
         gameLabelPanel.add(lGames);
         gameLabelPanel.add(numGames);
-        gameLabelPanel.add(won);
-        gameLabelPanel.add(lost);
-        gameLabelPanel.add(numWins);
-        gameLabelPanel.add(numLost);
+        gameLabelPanel.add(gPanel);
+
         
         hangedManPanel.setLayout(new BorderLayout());
-        hangedManPanel.setBackground(Color.CYAN);
+        hangedManPanel.setBackground(Color.RED);
         hangedManPanel.add(hMan);
         
         c.setLayout(new FlowLayout());

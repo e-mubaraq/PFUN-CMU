@@ -1,0 +1,7 @@
+Stanford
+Carnegie Mellon
+Harvard
+Yale
+MIT
+Princeton
+UCLA
