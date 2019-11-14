@@ -1,3 +1,6 @@
+import java.io.*;
+import java.util.*;
+
 
 /**
  * This is an helper class for processing ("crawling") the website.
@@ -11,4 +14,9 @@
 public class WebCrawler
 {
 
+    private Stack<File> toProcess = new Stack<File>();
+    private Stack<File> processedFiles = new Stack<File>();
+    
+    
+    
 }

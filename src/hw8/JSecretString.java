@@ -34,6 +34,7 @@ public class JSecretString extends JLabel
         secretPhrase = secret;
         displayString = secretPhrase.replaceAll("[A-Za-z]", "_");
         setText(displayString);
+        repaint();
     }
 
     public void setSecretPhrase(String secret)
@@ -41,6 +42,7 @@ public class JSecretString extends JLabel
         secretPhrase = secret;
         displayString = secretPhrase.replaceAll("[A-Za-z]", "_");
         setText(displayString);
+        repaint();
     }
 
     public boolean equals(String display)
@@ -83,6 +85,7 @@ public class JSecretString extends JLabel
             }
         }
         setText(displayString);
+        repaint();
         return count;
     }
     
