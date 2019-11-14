@@ -1,3 +1,4 @@
+package hw8;
 
 import java.util.*;
 import javax.swing.JLabel;

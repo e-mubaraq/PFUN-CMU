@@ -1,3 +1,4 @@
+package hw8;
 /**
   *
   * This interface represents declares a processString method

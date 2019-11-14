@@ -1,3 +1,4 @@
+package hw8;
 import java.awt.*;  // import the AWT graphic classes
 import javax.swing.*;   // import the Swing classes
 

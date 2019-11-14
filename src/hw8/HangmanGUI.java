@@ -1,3 +1,4 @@
+package hw8;
 /**
  * This class represents the GUI for an Hangman game
  *
