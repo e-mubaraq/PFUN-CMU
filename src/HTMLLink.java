@@ -13,18 +13,14 @@ import javax.swing.*;
 public class HTMLLink
 {
     private String link;
-    private JLabel label;
+    private String label;
 
     public HTMLLink()
     {
         link = "";
-        label = new JLabel();
+        label = "";
     }
-    public HTMLLink(JLabel label)
-    {
-        this.label = label;
-    }
-    public HTMLLink(JLabel label, String link)
+    public HTMLLink(String label, String link)
     {
         this.label = label;
         this.link = link;
@@ -34,7 +30,7 @@ public class HTMLLink
     {
         return link;
     }
-    public JLabel getLabel()
+    public String getLabel()
     {
         return label;
     }
@@ -42,17 +38,16 @@ public class HTMLLink
     {
         this.link = link;
     }
-    public void setLabel(JLabel label)
+    public void setLabel(String label)
     {
         this.label = label;
     }
 
-    public String formatLink(String url)
+    public String formatLink()
     {
         String htmlCode;
         
-        //htmlCode = "<a href=https://" + url + ">" + url + "</a>";
-        htmlCode = "<a href=" + url + ">" + url + "</a>";
+        htmlCode = "<a href=" + link + ">" + label + "</a>";
         return htmlCode;
     }
     

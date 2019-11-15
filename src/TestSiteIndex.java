@@ -18,18 +18,22 @@ public class TestSiteIndex
     public static void main(String[] args)
     {
         // TODO Auto-generated method stub
-        String secretLink;
+        String secretLink, classWebSite;
         HTMLLink link;
         IndexGenerator indexG;
         
-        link = new HTMLLink(new JLabel("04-330"));
         
-        secretLink = "http://public.africa.local.cmu.edu/cbishop/pfun/.phase2/mmikail07S/";
-        indexG = new IndexGenerator(secretLink);
+        
+        //secretLink = "http://public.africa.local.cmu.edu/cbishop/pfun/.phase2/mmikail07S/";
+        //secretLink = "http://public.rwanda.cmu.edu/cbishop/pfun/.phase2/mmikail07S";
+        secretLink = "http://public.africa.cmu.edu/cbishop/pfun/.phase2/mmikail07S";
+        classWebSite = "http://public.africa.cmu.edu/cbishop/pfun/";
+        link = new HTMLLink("04-330" , classWebSite);
+        indexG = new IndexGenerator(classWebSite);
         
         System.out.println("1. My secret link for Phase 2: " + secretLink);
-        System.out.println("2. base URL: " + URLUtils.getBaseURL(secretLink));
-        System.out.println("3. formatted link: " + link.formatLink(secretLink));
+        System.out.println("2. base URL: " + URLUtils.getBaseURL(classWebSite));
+        System.out.println("3. formatted link: " + link.formatLink());
         System.out.println("4. Listener: HyperlinkListener");
         System.out.println("5. Listener Method to Overload: public void hyperlinkUpdate(HyperlinkEvent e)");
         System.out.println("6. IndexGenerator: " + indexG );

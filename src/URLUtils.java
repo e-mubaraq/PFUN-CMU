@@ -15,10 +15,21 @@ public class URLUtils
     {
         String temp, baseUrl;
         if (url.startsWith("http://"))
+        {
             temp = url.replace("http://", "");
+            baseUrl = "http://" + temp.replaceAll("[/].*$", "") + "/" + "cbishop/pfun/";
+        }
+        else if (url.startsWith("https://"))
+        {
+            temp = url.replace("https://", "");
+            baseUrl = "https://" + temp.replaceAll("[/].*$", "") + "/" + "cbishop/pfun/";
+        }            
         else
+        {
             temp = url;
-        baseUrl = temp.replaceAll("[/].*$", "") + "/";
+            baseUrl = temp.replaceAll("[/].*$", "") + "/" + "cbishop/pfun/";
+        }
+            
         
         return baseUrl;
     }

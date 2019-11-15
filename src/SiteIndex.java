@@ -15,7 +15,6 @@ public class SiteIndex
 {
     public static void main(String[] args) throws IOException
     {
-        // TODO Auto-generated method stub
         BufferedReader keyboard = new BufferedReader(new InputStreamReader(System.in));
 
         String str;
@@ -37,6 +36,7 @@ public class SiteIndex
     }
 
     private static void createAndShowGUI(LayoutGUI gui)
+    
     {
         // Create a JFrame and get its content pane
 

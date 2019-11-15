@@ -13,8 +13,6 @@ public class IndexGenerator
 {
 
     private String startUrl;
-    private String baseUrl;
-    
     
     public IndexGenerator()
     {
@@ -38,7 +36,7 @@ public class IndexGenerator
     
     public String getBaseURL()
     {
-        return baseUrl;
+        return URLUtils.getBaseURL(getStartURL());
     }
     public String getWebpageTitle()
     {
@@ -54,11 +52,11 @@ public class IndexGenerator
     }
     public String getWordsIndexFile()
     {
-        return getWebpageTitle() + ".html";
+        return getWebpageTitle() + "words.html";
     }
     public String getExampleIndexFile()
     {
-        return getWebpageTitle() + ".html";
+        return getWebpageTitle() + "examples.html";
     }
     
     public String toString()

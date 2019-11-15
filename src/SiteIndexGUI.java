@@ -40,11 +40,14 @@ public class SiteIndexGUI extends LayoutGUI
         
         
         // Using anonynmous class
-        genIndexButton.addActionListener(new ActionListener(){  
-            public void actionPerformed(ActionEvent e){  
+        genIndexButton.addActionListener(new ActionListener()
+        {  
+            public void actionPerformed(ActionEvent e)
+            {  
                     editPane.setText(enteredURL.getText());  
             }  
-            });
+        }
+        );
     }
 
     
