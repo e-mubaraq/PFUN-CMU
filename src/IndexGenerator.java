@@ -72,10 +72,10 @@ public class IndexGenerator
     {
         return getWebpageTitle() + "examples.html";
     }
-    public HashSet<String> parseWords(WebCrawler web) throws IOException
+    public TreeSet<String> parseWords(WebCrawler web) throws IOException
     {
         LinkedList<String> href, list;
-        HashSet<String> words;
+        TreeSet<String> words;
         String[] wordsT;
         
         String temp, word = "";
@@ -87,25 +87,23 @@ public class IndexGenerator
         }
         wordsT = word.split("\\p{Space}");
         
-        words = new HashSet<String>(Arrays.asList(wordsT));
-//        for (String s: words)
-//            System.out.println(s);
+        words = new TreeSet<String>(Arrays.asList(wordsT));
+        for (String s: words)
+            System.out.println(s);
         return words;  
     }
     
     public void addWords(WebCrawler web) throws IOException
     {
         int i;
-        HashSet<String> words;
+        TreeSet<String> words;
         words = parseWords(web);
-        
-        wordIndex.addAll(words);
         
         for (String s : words)
         {
             for (i = 0; i < wordIndex.size(); i++)
             {
-                if (wordIndex.get(i).equals(s))
+                if (!(wordIndex.get(i)).equals(s))
                     wordIndex.add(s);
             }
         }

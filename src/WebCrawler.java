@@ -17,9 +17,8 @@ public class WebCrawler
     private List<File> toProcess = new ArrayList<File>();
     private List<File> processedFiles = new ArrayList<File>();
     
-    private ArrayList<HTMLLink> htmlFileList = new ArrayList<HTMLLink>();
-    private ArrayList<HTMLLink> exampleFileList = new ArrayList<HTMLLink>();
-    
+    private TreeMap<String, String> htmlFIleList;
+    private TreeMap<String, String> exampleFIleList;
     
     public WebCrawler()
     {
@@ -105,10 +104,58 @@ public class WebCrawler
                 
             }
         }
-                
         return list;
     }
     
+    public LinkedList<String> processHtml(URL site)
+    {
+        int idx, idx2;
+        String line;
+        LinkedList<String> href;
+        LinkedList<String> list = new LinkedList<String>();
+        
+        try
+        {
+            href = crawlHTML(site);
+            for (String str: href)
+            {
+                idx = str.indexOf("<a href");
+                idx2 = str.lastIndexOf("a>");
+                line = str.substring(idx , idx2 + 2);
+                list.add(line);
+            }
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+        for (String s: list)
+            System.out.println(s);  
+        return list;
+    }
+    public String getLabel(String link)
+    {
+        String label;
+        int idx, idx2;
+        
+        idx = link.indexOf(">");
+        idx2 = link.lastIndexOf("<");
+        label = link.substring(idx + 1, idx2).replaceAll("<(\"[^\"]*\"|'[^']*'|[^'\">])*>", "");
+        
+        return label;
+    }
+    
+    public String getLink(String htmlink)
+    {
+        String link;
+        int idx, idx2;
+        
+        idx = htmlink.indexOf("=");
+        idx2 = htmlink.indexOf(">" , idx);
+        link = htmlink.substring(idx + 1, idx2);
+        
+        return link;
+    }
     
     
 }

@@ -16,29 +16,24 @@ import javax.swing.text.html.HTMLFrameHyperlinkEvent;
  */
 public class LinkListener implements HyperlinkListener
 {
-
+    private JEditorPane _callback;
+    
+    public LinkListener(JEditorPane callback)
+    {
+        _callback = callback;
+    }
     public void hyperlinkUpdate(HyperlinkEvent event)
     {
-        
         if (event.getEventType() == HyperlinkEvent.EventType.ACTIVATED)
         {
-            JEditorPane edit = (JEditorPane)event.getSource();
-            if (event instanceof HTMLFrameHyperlinkEvent)
+            try
             {
-                HTMLFrameHyperlinkEvent evt = (HTMLFrameHyperlinkEvent)event;
-                HTMLDocument doc = (HTMLDocument)edit.getDocument();
-                doc.processHTMLFrameHyperlinkEvent(evt);
+                _callback.setPage(event.getURL());
             }
-            else
+            catch (IOException e1)
             {
-                try
-                {
-                    edit.setPage(event.getURL());
-                }
-                catch (IOException e1)
-                {
-                    e1.printStackTrace();
-                }
+                e1.printStackTrace();
+                _callback.setText("Page not available");
             }
         }
     }

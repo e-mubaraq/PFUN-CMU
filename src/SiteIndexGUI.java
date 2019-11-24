@@ -76,11 +76,10 @@ public class SiteIndexGUI extends LayoutGUI
                 }
                 catch (IOException e1)
                 {
-                    // TODO Auto-generated catch block
                     e1.printStackTrace();
                 }
-                editPane.addHyperlinkListener(new LinkListener());
-                exPane.addHyperlinkListener(new LinkListener());
+                editPane.addHyperlinkListener(new LinkListener(editPane));
+                exPane.addHyperlinkListener(new LinkListener(exPane));
             }
         }
         );
@@ -101,8 +100,6 @@ public class SiteIndexGUI extends LayoutGUI
             }
         }
         );
-        
-        
         
     }
 
