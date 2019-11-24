@@ -51,6 +51,11 @@ public class HTMLLink
         return htmlCode;
     }
     
+    public boolean equals(HTMLLink l)
+    {
+        return this.equals(l);
+    }
+    
     public String toString()
     {
         return "Link: " + getLink();

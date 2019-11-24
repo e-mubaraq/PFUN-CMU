@@ -1,3 +1,4 @@
+import java.net.URL;
 
 /**
  * This class contains helpful static methods for working with URLs
@@ -34,4 +35,13 @@ public class URLUtils
         return baseUrl;
     }
 
+    public static String getBaseURL(URL url)
+    {
+        String baseURL;
+        baseURL = url.getProtocol() + "://"+ url.getHost() + "/" + "cbishop/pfun/";
+        
+        
+        return baseURL;
+        
+    }
 }

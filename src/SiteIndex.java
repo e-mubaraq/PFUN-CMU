@@ -20,7 +20,6 @@ public class SiteIndex
         String str;
         final LayoutGUI gui;
 
-        // Prompt the User for the GUI to run.
         gui = new SiteIndexGUI();
 
         // Note: this is an anonymous inner-class that extends the Runnable class
