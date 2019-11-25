@@ -1,4 +1,7 @@
 import java.net.URL;
+import java.util.LinkedList;
+import java.util.TreeMap;
+import java.util.Vector;
 
 /**
  * This class contains helpful static methods for working with URLs
@@ -29,8 +32,7 @@ public class URLUtils
         {
             temp = url;
             baseUrl = temp.replaceAll("[/].*$", "") + "/" + "cbishop/pfun/";
-        }
-            
+        } 
         
         return baseUrl;
     }
@@ -56,5 +58,24 @@ public class URLUtils
             title = link.substring(idx + 7, idx2);
         }
         return title;        
+    }
+    
+    public static void printMap(TreeMap<String, HTMLLink> obj)
+    {
+        for (String key : obj.keySet())
+        {
+            System.out.println("link: " + key + "      HTMLLink: " + obj.get(key));
+        }
+    }
+
+    public static void printStack(LinkedList<String> list)
+    {
+        int i = 0;
+        for (Object e : list)
+        {
+            System.out.println("Entry " + i + ": " + e);
+            i++;
+        }
+        
     }
 }

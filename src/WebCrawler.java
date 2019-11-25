@@ -2,7 +2,6 @@ import java.io.*;
 import java.net.URL;
 import java.util.*;
 
-
 /**
  * This is an helper class for processing ("crawling") the website.
  *
@@ -14,10 +13,9 @@ import java.util.*;
  */
 public class WebCrawler
 {
-    private TreeMap<String, HTMLLink> toProcess;
-
-    private TreeMap<String, HTMLLink> htmlFileList;
-    private TreeMap<String, HTMLLink> exampleFileList;
+    private TreeMap<String, HTMLLink> toProcess = new TreeMap<String, HTMLLink>();
+    private TreeMap<String, HTMLLink> htmlFileList = new TreeMap<String, HTMLLink>();
+    private TreeMap<String, HTMLLink> exampleFileList = new TreeMap<String, HTMLLink>();
     
     public WebCrawler()
     {
@@ -26,6 +24,10 @@ public class WebCrawler
     public TreeMap<String, HTMLLink> gethtmlFileList()
     {
         return htmlFileList;
+    }
+    public TreeMap<String, HTMLLink> getToProcess()
+    {
+        return toProcess;
     }
     public TreeMap<String, HTMLLink> getExampleFileList()
     {
@@ -44,6 +46,8 @@ public class WebCrawler
             str = webPage.readLine();
         }
         webPage.close();
+        
+        URLUtils.printStack(lines);
         return lines;
     }
     
@@ -55,12 +59,10 @@ public class WebCrawler
         for (String str : href)
         {
             if (str.toLowerCase().contains("a href"))
-            {
-                list.add(str);
-            }      
+                list.add(str);   
         }
-        for (String h : list)
-            System.out.println(h);
+        
+        URLUtils.printStack(list);
         return list;   
     }
     
@@ -86,23 +88,54 @@ public class WebCrawler
         {
             e.printStackTrace();
         }
-        for (String s: list)
-            System.out.println(s);  
+        URLUtils.printStack(list);
         return list;
     }
     
-    public void addLink(HTMLLink hlink)
+    public void addLink(URL site)
     {
-        String link = hlink.getLink();
+        LinkedList<String> href;
+        String l, link, label;
+        HTMLLink hlink;
+        href = processHtml(site);
         
-        if (isSource(link))
-            exampleFileList.put(link, hlink);
-        else if (htmlFileList.containsValue(hlink))
-            ;
-        else if (toProcess.containsValue(hlink))
-            ;
-        else
-            toProcess.put(link, hlink);
+        for (String s : href)
+        {
+            l = getLink(s);
+            label = getLabel(s);
+            hlink = new HTMLLink(label, l);
+            link = hlink.getFullLink(l);
+            hlink = new HTMLLink(label, link);
+            
+            if (!link.startsWith("public"))
+                ;
+            else if (isSource(link))
+                exampleFileList.put(link, hlink);
+            else if (htmlFileList.containsValue(hlink))
+                ;
+            else if (toProcess.containsValue(hlink))
+                ;
+            else
+                toProcess.put(link, hlink);
+        }
+        
+        URLUtils.printMap(exampleFileList);
+        //URLUtils.printMap(htmlFileList);
+        //URLUtils.printMap(toProcess);
+    }
+    public void writeFile(String fname)
+    {
+        String s = "";
+        OutputDataFile dataFile = new OutputDataFile(fname);
+        dataFile.open();
+        if (!dataFile.isOpen())
+        {
+            System.out.println("Can't write to " + dataFile.getName() + " because it is not opening.");
+            System.exit(1);
+        }
+        
+        dataFile.println(s);
+        dataFile.close();
     }
     
     public String getLabel(String link)

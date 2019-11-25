@@ -35,6 +35,10 @@ public class HTMLLink
     {
         return label;
     }
+    public String getBaseURL()
+    {
+        return baseURL;
+    }
     public void setLink(String link)
     {
         this.link = link;
@@ -60,12 +64,12 @@ public class HTMLLink
     {
         String bURL = URLUtils.getBaseURL(URL);
         
-        return bURL.equalsIgnoreCase(baseURL);
+        return baseURL.equalsIgnoreCase(bURL);
     }
     
     public boolean isRelativeLink(String URL)
     {
-        if (!URL.startsWith("http"))
+        if (!URL.replaceAll("\"", "").startsWith("http"))
             return true;
         return false;
     }
@@ -73,14 +77,14 @@ public class HTMLLink
     public String getFullLink(String link)
     {
         if(isRelativeLink(link))
-            return URLUtils.getBaseURL(link) + link;
+            return "public.africa.local.cmu.edu/cbishop/pfun/" + link.replaceAll("\"", "");
         else
             return link;
     }
     
     public String toString()
     {
-        return "Link: " + getLink() + "Label: " + getLabel();
+        return "Link: " + getLink() + ", Label: " + getLabel();
     }
     
 }

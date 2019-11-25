@@ -20,8 +20,12 @@ public class SiteIndexGUI extends LayoutGUI
 
     public void addComponents(JFrame theFrame)
     {
-        String fname = "out.hml";
-        OutputDataFile out = new OutputDataFile(fname);
+        String wordFName, exampleFName;
+        wordFName= "word.html";
+        exampleFName = "example.html";
+        File f= new File("testExamples.html");
+        OutputDataFile out = new OutputDataFile(wordFName);
+        
         JTextField enteredURL;
         JButton genIndexButton, returnButton, returnExample;
         JEditorPane editPane, exPane;
@@ -32,7 +36,7 @@ public class SiteIndexGUI extends LayoutGUI
         JPanel mainPanel = new JPanel();
         
         enteredURL= new JTextField("http://public.africa.local.cmu.edu/cbishop/pfun/index.html");
-        //enteredURL= new JTextField("http://testExamples.html");
+        
         genIndexButton = new JButton("Generate Index");
         returnButton = new JButton("Return to Index");
         returnExample = new JButton("Return to Examples");
@@ -76,7 +80,8 @@ public class SiteIndexGUI extends LayoutGUI
                 try
                 {
                     editPane.setPage(enteredURL.getText());
-                    exPane.setPage(enteredURL.getText());
+                    //exPane.setPage(enteredURL.getText());
+                    exPane.setPage(f.toURI().toURL());
                 }
                 catch (IOException e1)
                 {
