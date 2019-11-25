@@ -14,6 +14,7 @@ public class HTMLLink
 {
     private String link;
     private String label;
+    private String baseURL;
 
     public HTMLLink()
     {
@@ -55,11 +56,31 @@ public class HTMLLink
     {
         return this.equals(l);
     }
+    public boolean isBaseEquals(String URL)
+    {
+        String bURL = URLUtils.getBaseURL(URL);
+        
+        return bURL.equalsIgnoreCase(baseURL);
+    }
+    
+    public boolean isRelativeLink(String URL)
+    {
+        if (!URL.startsWith("http"))
+            return true;
+        return false;
+    }
+    
+    public String getFullLink(String link)
+    {
+        if(isRelativeLink(link))
+            return URLUtils.getBaseURL(link) + link;
+        else
+            return link;
+    }
     
     public String toString()
     {
-        return "Link: " + getLink();
+        return "Link: " + getLink() + "Label: " + getLabel();
     }
     
-
 }

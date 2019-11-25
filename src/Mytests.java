@@ -13,21 +13,23 @@ public class Mytests
          String tHref = "<a href=../../testExamples.txt>testExamples.txt</a>";
          //System.out.println(URLUtils.getBaseURL(url));
          WebCrawler we = new WebCrawler();
-         WebCrawler w = new WebCrawler(url);
-         //w.crawlHTML(url);
-         w.processHtml(url);
-         //System.out.println(w.parse(url));
+         //we.crawlHTML(url);
+         //we.processHtml(url);
+         //we.parse(url);
          //System.out.println(w.readInURL(url));
          
          IndexGenerator indexG = new IndexGenerator(url);
-         //indexG.parseWords(w);
+         indexG.parseWords(we);
          //indexG.addWords(w);
          
-         System.out.println(we.getLabel(testHref));
-         System.out.println(we.getLabel(tHref));
+//         System.out.println(we.getLabel(testHref));
+//         System.out.println(we.getLabel(tHref));        
+//         System.out.println(we.getLink(testHref));
+//         System.out.println(we.getLink(tHref));
          
-         System.out.println(we.getLink(testHref));
-         System.out.println(we.getLink(tHref));
+         System.out.println(url.getFile());
+         System.out.println(URLUtils.getWebPageTitle("document.write(\"<title>04-330 Home Page</title>\");"));
+         
     }
 
 }

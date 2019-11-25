@@ -20,8 +20,10 @@ public class SiteIndexGUI extends LayoutGUI
 
     public void addComponents(JFrame theFrame)
     {
+        String fname = "out.hml";
+        OutputDataFile out = new OutputDataFile(fname);
         JTextField enteredURL;
-        JButton genIndexButton, returnButton;
+        JButton genIndexButton, returnButton, returnExample;
         JEditorPane editPane, exPane;
         JScrollPane scroll, exampleScroll;
          
@@ -30,14 +32,15 @@ public class SiteIndexGUI extends LayoutGUI
         JPanel mainPanel = new JPanel();
         
         enteredURL= new JTextField("http://public.africa.local.cmu.edu/cbishop/pfun/index.html");
+        //enteredURL= new JTextField("http://testExamples.html");
         genIndexButton = new JButton("Generate Index");
         returnButton = new JButton("Return to Index");
+        returnExample = new JButton("Return to Examples");
         
         editPane = new JEditorPane();
-        editPane.setPreferredSize(new Dimension(500, 500));
+        editPane.setPreferredSize(new Dimension(500, 800));
         
         exPane = new JEditorPane();
-        exPane.setPreferredSize(new Dimension(500, 500));
         
         scroll = new JScrollPane(editPane);
         exampleScroll = new JScrollPane(exPane);
@@ -52,7 +55,8 @@ public class SiteIndexGUI extends LayoutGUI
         urlPanel.setLayout(new GridLayout(1, 2));
         urlPanel.add(returnButton);
         urlPanel.add(enteredURL);
-        urlPanel.add(genIndexButton);      
+        urlPanel.add(genIndexButton);    
+        urlPanel.add(returnExample);
         
         scPanel.setLayout(new GridLayout(1, 1));
         scPanel.add(scroll);
@@ -91,6 +95,22 @@ public class SiteIndexGUI extends LayoutGUI
                 try
                 {
                     editPane.setPage(enteredURL.getText());
+                }
+                catch (IOException e1)
+                {
+                    e1.printStackTrace();
+                }
+                
+            }
+        }
+        );
+        returnExample.addActionListener(new ActionListener()
+        {
+            public void actionPerformed(ActionEvent e)
+            {
+                try
+                {
+                    exPane.setPage(enteredURL.getText());                  
                 }
                 catch (IOException e1)
                 {

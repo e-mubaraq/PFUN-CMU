@@ -2,8 +2,7 @@ import java.io.IOException;
 
 import javax.swing.JEditorPane;
 import javax.swing.event.*;
-import javax.swing.text.html.HTMLDocument;
-import javax.swing.text.html.HTMLFrameHyperlinkEvent;
+
 
 /**
  * This class sets up listeners for html links.

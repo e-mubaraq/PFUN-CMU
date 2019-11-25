@@ -3,3 +3,58 @@ MadLib: Sick Note
 Hello [boss], this is [person's name].
 
 I think I've got that [stomach] virus that is going around [campus].
+
+
+//    public LinkedList<String> crawlHTML(URL site) throws IOException
+//    {
+//        String str;
+//        LinkedList<String> href = new LinkedList<String>();
+//        BufferedReader webPage = new BufferedReader(new InputStreamReader(site.openStream()));
+//        str = webPage.readLine();
+//        while(str != null)
+//        {
+//            if (str.toLowerCase().contains("a href"))
+//            {
+//                href.add(str);
+//            }
+//            str = webPage.readLine();
+//        }
+//        webPage.close();
+//        for (String h : href)
+//            System.out.println(h);
+//        return href;
+//    }
+
+
+//    public LinkedList<String> processFiles(URL site) throws IOException
+//    {
+//        LinkedList<String> href;
+//        LinkedList<String> list = new LinkedList<String>();
+//        href = parse(site);
+//        
+//        for (String str : href)
+//        {
+//            if (str.contains(".cpp") || str.contains(".java") || str.contains(".h") || str.contains(".c"))
+//            {
+//                list.add(str);
+//            }
+//            else if(str.contains(".html"))
+//            {
+//                
+//            }
+//        }
+//        return list;
+//    }
+
+
+//    public WebCrawler(URL site) throws IOException
+//    {
+//        String str;
+//        BufferedReader webPage = new BufferedReader(new InputStreamReader(site.openStream()));
+//        str = webPage.readLine();
+//        while(str != null)
+//        {
+//            str = webPage.readLine();
+//        }
+//        webPage.close();        
+//    }

@@ -44,4 +44,17 @@ public class URLUtils
         return baseURL;
         
     }
+    public static String getWebPageTitle(String link)
+    {
+        int idx, idx2;
+        String title = "";
+        if(link.contains("<title>"))
+        {
+            idx = link.indexOf("<title>");
+            idx2 = link.indexOf("</title>");
+            
+            title = link.substring(idx + 7, idx2);
+        }
+        return title;        
+    }
 }

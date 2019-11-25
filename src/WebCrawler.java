@@ -14,27 +14,22 @@ import java.util.*;
  */
 public class WebCrawler
 {
-    private List<File> toProcess = new ArrayList<File>();
-    private List<File> processedFiles = new ArrayList<File>();
-    
-    private TreeMap<String, String> htmlFIleList;
-    private TreeMap<String, String> exampleFIleList;
+    private TreeMap<String, HTMLLink> toProcess;
+
+    private TreeMap<String, HTMLLink> htmlFileList;
+    private TreeMap<String, HTMLLink> exampleFileList;
     
     public WebCrawler()
     {
         
     }
-    public WebCrawler(URL site) throws IOException
+    public TreeMap<String, HTMLLink> gethtmlFileList()
     {
-        String str;
-        BufferedReader webPage = new BufferedReader(new InputStreamReader(site.openStream()));
-        str = webPage.readLine();
-        while(str != null)
-        {
-            str = webPage.readLine();
-        }
-        webPage.close();
-        
+        return htmlFileList;
+    }
+    public TreeMap<String, HTMLLink> getExampleFileList()
+    {
+        return exampleFileList;
     }
     
     public LinkedList<String> readInURL(URL site) throws IOException
@@ -52,59 +47,21 @@ public class WebCrawler
         return lines;
     }
     
-    public LinkedList<String> crawlHTML(URL site) throws IOException
-    {
-        String str;
-        LinkedList<String> href = new LinkedList<String>();
-        BufferedReader webPage = new BufferedReader(new InputStreamReader(site.openStream()));
-        str = webPage.readLine();
-        while(str != null)
-        {
-            if (str.toLowerCase().contains("a href"))
-            {
-                href.add(str);
-            }
-            str = webPage.readLine();
-        }
-        webPage.close();
-        for (String h : href)
-            System.out.println(h);
-        return href;
-    }
-    
     public LinkedList<String> parse(URL site) throws IOException
     {
         LinkedList<String> href;
         LinkedList<String> list = new LinkedList<String>();
         href = readInURL(site);
-        for (String str : href){
+        for (String str : href)
+        {
             if (str.toLowerCase().contains("a href"))
             {
                 list.add(str);
-                //list.add(str.replaceAll(" (?<=[^<a href])", ""));
             }      
         }
-
+        for (String h : list)
+            System.out.println(h);
         return list;   
-    }
-    
-    public LinkedList<String> processFiles(URL site) throws IOException
-    {
-        LinkedList<String> href;
-        LinkedList<String> list = new LinkedList<String>();
-        href = parse(site);
-        
-        for (String str : href){
-            if (str.contains(".cpp") || str.contains(".java") || str.contains(".h") || str.contains(".c"))
-            {
-                list.add(str);
-            }
-            else if(str.contains(".html"))
-            {
-                
-            }
-        }
-        return list;
     }
     
     public LinkedList<String> processHtml(URL site)
@@ -116,7 +73,7 @@ public class WebCrawler
         
         try
         {
-            href = crawlHTML(site);
+            href = parse(site);
             for (String str: href)
             {
                 idx = str.indexOf("<a href");
@@ -133,6 +90,21 @@ public class WebCrawler
             System.out.println(s);  
         return list;
     }
+    
+    public void addLink(HTMLLink hlink)
+    {
+        String link = hlink.getLink();
+        
+        if (isSource(link))
+            exampleFileList.put(link, hlink);
+        else if (htmlFileList.containsValue(hlink))
+            ;
+        else if (toProcess.containsValue(hlink))
+            ;
+        else
+            toProcess.put(link, hlink);
+    }
+    
     public String getLabel(String link)
     {
         String label;
@@ -156,6 +128,21 @@ public class WebCrawler
         
         return link;
     }
+    
+    public boolean isHTML(String link)
+    {
+        if (link.endsWith(".html") || link.contains(".html") || link.endsWith("/"))
+            return true;
+        return false;
+    }
+    public boolean isSource(String link)
+    {
+        if (link.endsWith(".java") || link.endsWith(".c") || link.endsWith("h") || link.endsWith(".cpp"))
+            return true;
+        return false;
+    }
+    
+
     
     
 }
