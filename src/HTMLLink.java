@@ -60,6 +60,7 @@ public class HTMLLink
     {
         return this.equals(l);
     }
+    
     public boolean isBaseEquals(String URL)
     {
         String bURL = URLUtils.getBaseURL(URL);
@@ -77,7 +78,7 @@ public class HTMLLink
     public String getFullLink(String link)
     {
         if(isRelativeLink(link))
-            return "public.africa.local.cmu.edu/cbishop/pfun/" + link.replaceAll("\"", "");
+            return "http://public.africa.local.cmu.edu/cbishop/pfun/" + link.replaceAll("\"", "");
         else
             return link;
     }

@@ -1,7 +1,5 @@
 import java.net.URL;
-import java.util.LinkedList;
-import java.util.TreeMap;
-import java.util.Vector;
+import java.util.*;
 
 /**
  * This class contains helpful static methods for working with URLs
@@ -75,6 +73,14 @@ public class URLUtils
         {
             System.out.println("Entry " + i + ": " + e);
             i++;
+        }      
+    }
+
+    public static void printHMap(TreeMap<String, ArrayList<HTMLLink>> obj)
+    {
+        for (String key : obj.keySet())
+        {
+            System.out.println("word: " + key + "      HTMLLink: " + obj.get(key));
         }
         
     }

@@ -2,8 +2,10 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
+import java.net.URL;
+
 import javax.swing.*;
-import javax.swing.event.HyperlinkEvent;
+
 
 /**
  * This class represents the GUI for the site
@@ -20,11 +22,14 @@ public class SiteIndexGUI extends LayoutGUI
 
     public void addComponents(JFrame theFrame)
     {
-        String wordFName, exampleFName;
-        wordFName= "word.html";
-        exampleFName = "example.html";
-        File f= new File("testExamples.html");
-        OutputDataFile out = new OutputDataFile(wordFName);
+        String wordFName= "04-330_WordIndex.html";
+        String exampleFName = "04-330_Examples.html";
+        
+        WebCrawler web = new WebCrawler();
+        IndexGenerator indexG = new IndexGenerator();
+        
+        File f= new File(exampleFName);
+        File wordF= new File(wordFName);
         
         JTextField enteredURL;
         JButton genIndexButton, returnButton, returnExample;
@@ -79,9 +84,15 @@ public class SiteIndexGUI extends LayoutGUI
             {
                 try
                 {
-                    editPane.setPage(enteredURL.getText());
-                    //exPane.setPage(enteredURL.getText());
+                    //web.addLink(new URL(enteredURL.getText()));
+                    web.parseAllHtml(new URL(enteredURL.getText()));
+                    web.writeFile(exampleFName);
                     exPane.setPage(f.toURI().toURL());
+                    
+//                    indexG.addWordsAndHTML(web);
+//                    indexG.writeWordFile(wordFName);
+//                    editPane.setPage(wordF.toURI().toURL());
+                    //editPane.setPage(enteredURL.getText());
                 }
                 catch (IOException e1)
                 {
@@ -105,7 +116,6 @@ public class SiteIndexGUI extends LayoutGUI
                 {
                     e1.printStackTrace();
                 }
-                
             }
         }
         );
@@ -115,7 +125,8 @@ public class SiteIndexGUI extends LayoutGUI
             {
                 try
                 {
-                    exPane.setPage(enteredURL.getText());                  
+                    //exPane.setPage(enteredURL.getText());
+                    exPane.setPage(f.toURI().toURL());
                 }
                 catch (IOException e1)
                 {

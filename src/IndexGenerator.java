@@ -16,7 +16,7 @@ public class IndexGenerator
 
     private String startUrl;
     private URL startUR;
-    private TreeMap<String, ArrayList<HTMLLink>> wordIndex = new TreeMap<String, ArrayList<HTMLLink>>();
+    private TreeMap<String, LinkedList<HTMLLink>> wordIndex = new TreeMap<String, LinkedList<HTMLLink>>();
     
     
     public IndexGenerator()
@@ -48,10 +48,6 @@ public class IndexGenerator
     {
         return URLUtils.getBaseURL(getStartURL());
     }
-//    public URL getBaseURL()
-//    {
-//        return URLUtils.getBaseURL(getStartURL());
-//    }
     public String getWebpageTitle()
     {
         String str, temp;
@@ -80,7 +76,7 @@ public class IndexGenerator
         TreeSet<String> words;
         String[] wordsT;
         TreeMap<String, HTMLLink> pagesToParse;
-        String temp, word = "";
+        String link, temp, word = "";
         
         pagesToParse = web.gethtmlFileList();
         
@@ -90,11 +86,10 @@ public class IndexGenerator
             temp = str.replaceAll("[\\p{Punct}0-9]", " ");
             word = word + " " + temp;
         }
-        wordsT = word.split("\\p{Space}");
+//        word = word.replaceAll("^[A-Za-z].$", "");
+        wordsT = word.toLowerCase().split("\\p{Space}");
         
         words = new TreeSet<String>(Arrays.asList(wordsT));
-        for (String s: words)
-            System.out.println(s);
         return words;  
     }
 
@@ -107,29 +102,67 @@ public class IndexGenerator
         
         for (String s : words)
         {
-            for (i = 0; i < uniqueWords.size(); i++)
-            {
-                if (!(uniqueWords.get(i)).equals(s))
-                    uniqueWords.add(s);
-            }
+            uniqueWords.add(s);
+//            for (i = 0; i < uniqueWords.size(); i++)
+//            {
+//                if (!(uniqueWords.get(i)).equals(s))
+//                    uniqueWords.add(s);
+//            }
         }
+        //URLUtils.printStack(uniqueWords);
         return uniqueWords;
     }
     
     public void addWordsAndHTML(WebCrawler web) throws IOException
     {
-        LinkedList<String> words;
-        words = addWords(web);
+        LinkedList<String> words = new LinkedList<String>();
+        LinkedList<HTMLLink> hlinks = new LinkedList<HTMLLink>();
         HTMLLink htmlink;
-        ArrayList<HTMLLink> hlinks = new ArrayList<HTMLLink>();
-        
+        words = addWords(web);
         
         for (String s : words)
         {
-            htmlink = web.gethtmlFileList().get(s);
+            System.out.println("add + " + s);
+            //htmlink = web.gethtmlFileList().get(s);
+            htmlink = web.getToProcess().get(s);
+            System.out.println("hlink =>> " + htmlink);
             hlinks.add(htmlink);
             wordIndex.put(s, hlinks);
-        }
+        } 
+        
+        //URLUtils.printHMap(wordIndex);
+    }
+    public boolean isExclude()
+    {
+        return false;
+    }
+    
+    public void writeWordFile(String fname) 
+    { 
+      Set<String> words;
+      words = wordIndex.keySet();
+      String flink;
+      LinkedList<HTMLLink> hLinks;
+      OutputDataFile dataFile = new OutputDataFile(fname);
+      
+      dataFile.open();
+      if (!dataFile.isOpen())
+      {
+          System.out.println("Can't write to " + dataFile.getName() + " because it is not opening.");
+          System.exit(1);
+      }
+      
+      for(String s : words)
+      {
+          dataFile.println("<p>" + s + "</p>");
+          hLinks = wordIndex.get(s);
+          for (HTMLLink hlink: hLinks)
+          {
+              flink = hlink.formatLink();
+              dataFile.println("<li>" + flink);    
+          }
+      }
+      dataFile.close();
     }
     
     public String getRootWord(String word)

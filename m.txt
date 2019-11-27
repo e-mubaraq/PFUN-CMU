@@ -58,3 +58,54 @@ I think I've got that [stomach] virus that is going around [campus].
 //        }
 //        webPage.close();        
 //    }
+
+
+    /*
+     * public LinkedList<String> processHtml(URL site) { int idx, idx2; String line;
+     * LinkedList<String> href; LinkedList<String> list = new LinkedList<String>();
+     * 
+     * try { href = parse(site); for (String str : href) { idx =
+     * str.indexOf("<a href"); idx2 = str.lastIndexOf("a>"); line =
+     * str.substring(idx, idx2 + 2); list.add(line); } } catch (IOException e) {
+     * e.printStackTrace(); } URLUtils.printStack(list); return list; }
+     */
+     
+        /**
+     * This method populates the required Lists by processing all the links in the starting url to be crawled
+     * @param site to be crawled
+     * @throws IOException
+     */
+//    public void addLink(URL site) throws IOException
+//    {
+//        LinkedList<String> href;
+//        String l, link, label;
+//        HTMLLink hlink;
+//        //href = parse(site);
+//        href = parseAllHtml(site);
+//
+//        for (String s : href)
+//        {
+//            l = getLink(s);
+//            label = getLabel(s);
+//            hlink = new HTMLLink(label, l);
+//            link = hlink.getFullLink(l);
+//            hlink = new HTMLLink(label, link);
+//
+//            if (!link.startsWith("http://public."))
+//                ;
+//            else if (isSource(link))
+//                exampleFileList.put(link, hlink);
+//            else if (htmlFileList.containsValue(hlink))
+//                ;
+//            else if (toProcess.containsValue(hlink))
+//                ;
+//            else
+//                toProcess.put(link, hlink);
+//        }
+//
+//        URLUtils.printMap(exampleFileList);
+//        // URLUtils.printMap(htmlFileList);
+//        //URLUtils.printMap(toProcess);
+//    }
+
+

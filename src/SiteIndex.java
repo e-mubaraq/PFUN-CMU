@@ -15,9 +15,7 @@ public class SiteIndex
 {
     public static void main(String[] args) throws IOException
     {
-        BufferedReader keyboard = new BufferedReader(new InputStreamReader(System.in));
 
-        String str;
         final LayoutGUI gui;
 
         gui = new SiteIndexGUI();
