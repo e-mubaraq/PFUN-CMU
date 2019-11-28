@@ -13,36 +13,15 @@ import java.util.*;
 public class URLUtils
 {
 
-    public static String getBaseURL(String url)
-    {
-        String temp, baseUrl;
-        if (url.startsWith("http://"))
-        {
-            temp = url.replace("http://", "");
-            baseUrl = "http://" + temp.replaceAll("[/].*$", "") + "/" + "cbishop/pfun/";
-        }
-        else if (url.startsWith("https://"))
-        {
-            temp = url.replace("https://", "");
-            baseUrl = "https://" + temp.replaceAll("[/].*$", "") + "/" + "cbishop/pfun/";
-        }            
-        else
-        {
-            temp = url;
-            baseUrl = temp.replaceAll("[/].*$", "") + "/" + "cbishop/pfun/";
-        } 
-        
-        return baseUrl;
-    }
+
 
     public static String getBaseURL(URL url)
     {
         String baseURL;
-        baseURL = url.getProtocol() + "://"+ url.getHost() + "/" + "cbishop/pfun/";
-        
+        int idx = url.getFile().lastIndexOf("/");
+        baseURL = url.getProtocol() + "://" + url.getHost() + url.getFile().substring(0, idx + 1);
         
         return baseURL;
-        
     }
     public static String getWebPageTitle(String link)
     {
@@ -66,7 +45,16 @@ public class URLUtils
         }
     }
 
-    public static void printStack(LinkedList<String> list)
+    public static void printList(LinkedList<String> list)
+    {
+        int i = 0;
+        for (Object e : list)
+        {
+            System.out.println("Entry " + i + ": " + e);
+            i++;
+        }      
+    }
+    public static void printTree(TreeSet<String> list)
     {
         int i = 0;
         for (Object e : list)
@@ -76,12 +64,36 @@ public class URLUtils
         }      
     }
 
-    public static void printHMap(TreeMap<String, ArrayList<HTMLLink>> obj)
+    public static void printHMap(TreeMap<String, LinkedList<HTMLLink>> wordIndex)
     {
-        for (String key : obj.keySet())
+        for (String key : wordIndex.keySet())
         {
-            System.out.println("word: " + key + "      HTMLLink: " + obj.get(key));
+            System.out.println("word: " + key + "      HTMLLink: " + wordIndex.get(key));
         }
         
+    }
+    
+    public static LinkedList<String> readFile(String filename)
+    {
+        String input;
+        LinkedList<String> excludeWords = new LinkedList<String>();
+        InputDataFile dataFile = new InputDataFile(filename);
+
+        dataFile.open();
+        if (!dataFile.isOpen())
+        {
+            System.out.println("Can't read " + dataFile.getName() + " because it is not opening.");
+            System.exit(1);
+        }
+
+        input = dataFile.readString();
+        while (input != null)
+        {
+            excludeWords.add(input.toLowerCase());
+            input = dataFile.readString();
+        }
+
+        dataFile.close();
+        return excludeWords;
     }
 }

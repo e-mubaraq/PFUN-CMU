@@ -2,9 +2,13 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
+import java.net.MalformedURLException;
 import java.net.URL;
 
+import javax.annotation.Generated;
 import javax.swing.*;
+
+import GUI.FlowGUI;
 
 
 /**
@@ -19,49 +23,41 @@ import javax.swing.*;
 
 public class SiteIndexGUI extends LayoutGUI
 {
-
+    private JEditorPane wordPane, exPane;
+    private JTextField enteredURL;
+    private WebCrawler web = new WebCrawler();
+    private IndexGenerator indexG = new IndexGenerator();
+    
     public void addComponents(JFrame theFrame)
     {
-        String wordFName= "04-330_WordIndex.html";
-        String exampleFName = "04-330_Examples.html";
-        
-        WebCrawler web = new WebCrawler();
-        IndexGenerator indexG = new IndexGenerator();
-        
-        File f= new File(exampleFName);
-        File wordF= new File(wordFName);
-        
-        JTextField enteredURL;
-        JButton genIndexButton, returnButton, returnExample;
-        JEditorPane editPane, exPane;
-        JScrollPane scroll, exampleScroll;
-         
+        JButton genIndexButton, returnButton, returnExample;        
+        JScrollPane scroll, exampleScroll;         
         JPanel urlPanel = new JPanel();
         JPanel scPanel = new JPanel();
         JPanel mainPanel = new JPanel();
         
-        enteredURL= new JTextField("http://public.africa.local.cmu.edu/cbishop/pfun/index.html");
+        enteredURL= new JTextField("http://public.africa.local.cmu.edu/cbishop/pfun/");
         
         genIndexButton = new JButton("Generate Index");
         returnButton = new JButton("Return to Index");
         returnExample = new JButton("Return to Examples");
         
-        editPane = new JEditorPane();
-        editPane.setPreferredSize(new Dimension(500, 800));
+        wordPane = new JEditorPane();
+        wordPane.setPreferredSize(new Dimension(500, 800));
         
         exPane = new JEditorPane();
         
-        scroll = new JScrollPane(editPane);
+        scroll = new JScrollPane(wordPane);
         exampleScroll = new JScrollPane(exPane);
         
-        editPane.setEditable(false);
+        wordPane.setEditable(false);
         exPane.setEditable(false);
         
         Container c = theFrame.getContentPane();
         c.setLayout(new FlowLayout());
         c.setBackground(Color.WHITE);
         
-        urlPanel.setLayout(new GridLayout(1, 2));
+        urlPanel.setLayout(new FlowLayout());
         urlPanel.add(returnButton);
         urlPanel.add(enteredURL);
         urlPanel.add(genIndexButton);    
@@ -74,32 +70,19 @@ public class SiteIndexGUI extends LayoutGUI
         mainPanel.setLayout(new BorderLayout(50,50));
         mainPanel.add(urlPanel, BorderLayout.NORTH);
         mainPanel.add(scPanel, BorderLayout.CENTER);
+
         
         c.add(mainPanel);        
+        
+        wordPane.addHyperlinkListener(new LinkListener(wordPane));
+        exPane.addHyperlinkListener(new LinkListener(exPane));
         
         // Using anonynmous class
         genIndexButton.addActionListener(new ActionListener()
         {  
             public void actionPerformed(ActionEvent e)
             {
-                try
-                {
-                    //web.addLink(new URL(enteredURL.getText()));
-                    web.parseAllHtml(new URL(enteredURL.getText()));
-                    web.writeFile(exampleFName);
-                    exPane.setPage(f.toURI().toURL());
-                    
-//                    indexG.addWordsAndHTML(web);
-//                    indexG.writeWordFile(wordFName);
-//                    editPane.setPage(wordF.toURI().toURL());
-                    //editPane.setPage(enteredURL.getText());
-                }
-                catch (IOException e1)
-                {
-                    e1.printStackTrace();
-                }
-                editPane.addHyperlinkListener(new LinkListener(editPane));
-                exPane.addHyperlinkListener(new LinkListener(exPane));
+                generateIndex();
             }
         }
         );
@@ -110,7 +93,10 @@ public class SiteIndexGUI extends LayoutGUI
             {
                 try
                 {
-                    editPane.setPage(enteredURL.getText());
+                    String wordFName = indexG.getExampleIndexFile();
+                    indexG.writeWordFile(wordFName);
+                    File wordFile = new File(wordFName);
+                    wordPane.setPage(wordFile.toURI().toURL());
                 }
                 catch (IOException e1)
                 {
@@ -119,13 +105,16 @@ public class SiteIndexGUI extends LayoutGUI
             }
         }
         );
+        
         returnExample.addActionListener(new ActionListener()
         {
             public void actionPerformed(ActionEvent e)
             {
                 try
                 {
-                    //exPane.setPage(enteredURL.getText());
+                    String exampleFName = indexG.getExampleIndexFile();
+                    web.writeFile(exampleFName);
+                    File f = new File(exampleFName);
                     exPane.setPage(f.toURI().toURL());
                 }
                 catch (IOException e1)
@@ -135,8 +124,41 @@ public class SiteIndexGUI extends LayoutGUI
                 
             }
         }
-        );
-        
+        );  
+    }
+
+    public void generateIndex()
+    {
+        String exampleFName, wordFName;
+        try
+        {
+            HTMLLink.baseURL = enteredURL.getText();
+            indexG.setStartURL(enteredURL.getText());
+            exampleFName = indexG.getExampleIndexFile();
+            wordFName = indexG.getWordsIndexFile();
+            File f = new File(exampleFName);
+            File wordF= new File(wordFName);
+            
+            web.parseAllHtml(new URL(enteredURL.getText()));
+            web.parseMoreHTML();
+            web.writeFile(exampleFName);
+            exPane.setPage(f.toURI().toURL());
+            
+
+            indexG.parseWords(web);
+            indexG.addWordsAndHTML(web);            
+            indexG.writeWordFile(wordFName);
+            wordPane.setPage(wordF.toURI().toURL());
+        }
+        catch (MalformedURLException e)
+        {
+            e.printStackTrace();
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+
     }
 
     

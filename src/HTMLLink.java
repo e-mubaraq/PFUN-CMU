@@ -1,3 +1,6 @@
+import java.net.MalformedURLException;
+import java.net.URL;
+
 import javax.swing.*;
 
 
@@ -14,7 +17,7 @@ public class HTMLLink
 {
     private String link;
     private String label;
-    private String baseURL;
+    public static String baseURL = "http://public.africa.local.cmu.edu/cbishop/pfun/";
 
     public HTMLLink()
     {
@@ -47,6 +50,7 @@ public class HTMLLink
     {
         this.label = label;
     }
+    
 
     public String formatLink()
     {
@@ -61,9 +65,9 @@ public class HTMLLink
         return this.equals(l);
     }
     
-    public boolean isBaseEquals(String URL)
+    public boolean isBaseEquals(String URL) throws MalformedURLException
     {
-        String bURL = URLUtils.getBaseURL(URL);
+        String bURL = URLUtils.getBaseURL(new URL(URL));
         
         return baseURL.equalsIgnoreCase(bURL);
     }
@@ -77,8 +81,12 @@ public class HTMLLink
     
     public String getFullLink(String link)
     {
-        if(isRelativeLink(link))
-            return "http://public.africa.local.cmu.edu/cbishop/pfun/" + link.replaceAll("\"", "");
+        if(link.contains("/cbishop/pfun/"))
+            return baseURL;
+        else if(isRelativeLink(link))
+            return baseURL + link.replaceAll("\"", "");
+//        else if(link.equalsIgnoreCase("/cbishop/pfun/"))
+//            return baseURL;
         else
             return link;
     }

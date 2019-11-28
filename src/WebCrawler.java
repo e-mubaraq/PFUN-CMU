@@ -63,8 +63,7 @@ public class WebCrawler
             catch (IOException e)
             {
                 // TODO Auto-generated catch block
-                e.printStackTrace();
-                errorLinks.add(site.toString());
+                errorLinks.add(e.getMessage() + " " + site);
             }
         }
        return lines;
@@ -75,15 +74,15 @@ public class WebCrawler
      * @param site to be crawled
      * @return List of lines that contain href and without non href tags
      */
-    public LinkedList<String> parse(URL site) throws IOException
+    public LinkedList<String> parseHref(URL site) throws IOException
     {
         int idx, idx2;
         String line;
-        LinkedList<String> href, listOfHref = new LinkedList<String>();
+        LinkedList<String> allLines, listOfHref = new LinkedList<String>();
         LinkedList<String> list = new LinkedList<String>();
         
-        href = readInURL(site);
-        for (String str : href)
+        allLines = readInURL(site);
+        for (String str : allLines)
         {
             if (str.toLowerCase().contains("a href") && str.contains("</a>") && !str.contains("mailto:"))
                 listOfHref.add(str);
@@ -95,7 +94,6 @@ public class WebCrawler
             line = str.substring(idx, idx2 + 2);
             list.add(line);
         }
-        //URLUtils.printStack(list);
         return list;
     }
 /**
@@ -105,14 +103,12 @@ public class WebCrawler
  */
    public void parseAllHtml(URL site) throws IOException
    {
-       HTMLLink hlink, hKLink;
-       String tLink, link, label, klink;
-       Set<String> links;
-       LinkedList<String> href, href2;
-       LinkedList<String> list = new LinkedList<String>();
+       HTMLLink hlink;
+       String tLink, link, label;
+       LinkedList<String> hrefs;
        
-       href = parse(site);
-       for (String s : href)
+       hrefs = parseHref(site);
+       for (String s : hrefs)
        {
            tLink = getLink(s);         
            label = getLabel(s);
@@ -121,68 +117,63 @@ public class WebCrawler
            link = hlink.getFullLink(tLink);
            hlink = new HTMLLink(label, link);
            
-           if (!link.startsWith("http://public.") || link.contains("#")) // Links not part of Cathy's website and those on the same page with different IDs
+           if (!link.startsWith(HTMLLink.baseURL) || link.contains("#")) // Links not part of Cathy's website and those on the same page with different IDs
                ;
            else if (isSource(link))     //Links that are source files
                exampleFileList.put(link, hlink);
-           else if (htmlFileList.containsValue(hlink))      //Links already part of the htmlFilelist
+           else if (htmlFileList.containsKey(hlink.getLink()))      //Links already part of the htmlFilelist
                ;
-           else if (toProcess.containsValue(hlink))         //Links to be processed
+           else if (toProcess.containsKey(hlink.getLink()))         //Links to be processed
                ;
            else
-               toProcess.put(link, hlink);
+               toProcess.put(hlink.getLink(), hlink);
        }
-       
-       links = toProcess.keySet();
-       for(String key : links)
-       {
-           hlink = toProcess.get(key);
-           link = getLink(hlink.formatLink());
-           System.out.println("link to be crawled: " + link);
-           href2 = parse(new URL(link));
-           
-           for(String k : href2)
-           {
-               klink = hlink.getFullLink(getLink(k)).replace("\"", "");
-               //System.out.println("inner Link: " + klink);
-               if (isSource(klink))
-                   exampleFileList.put(klink, new HTMLLink(getLabel(k), klink));
-               else if (klink.contains("https://"))
-                   ;
-               else
-                   list = parse(new URL(klink));
-           }
-           htmlFileList.put(link, hlink);
-           //toProcess.remove(key);
-       }
-       
-       //URLUtils.printMap(exampleFileList);
-        URLUtils.printMap(htmlFileList);
-        //URLUtils.printMap(toProcess);
-
+        //URLUtils.printList(errorLinks);
+    }
+    
+    public void parseMoreHTML()
+    {
+        HTMLLink hlink;
+        String link;
+        
+        while (!toProcess.isEmpty())
+        {
+            link = toProcess.firstKey();
+            hlink = toProcess.get(link);
+            toProcess.remove(hlink.getLink());
+            htmlFileList.put(link, hlink);
+            try
+            {
+                parseAllHtml(new URL (hlink.getLink()));
+            }
+            catch (IOException e)
+            {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
     }
     
       public void writeFile(String fname) 
       { 
         Set<String> links;
-        links = exampleFileList.keySet();
-
         String flink;
         HTMLLink hlink;
         OutputDataFile dataFile = new OutputDataFile(fname);
         
+        links = exampleFileList.keySet();
         dataFile.open();
         if (!dataFile.isOpen())
         {
             System.out.println("Can't write to " + dataFile.getName() + " because it is not opening.");
             System.exit(1);
         }
-        
+        dataFile.println("<b>Example Files</b>");
         for(String s : links)
         {
             hlink = exampleFileList.get(s);
             flink = hlink.formatLink();
-            dataFile.println("<p>" + flink + "<p>");    
+            dataFile.println("<br>" + flink + "</br>");    
         }
 
         dataFile.close();

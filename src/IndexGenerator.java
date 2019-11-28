@@ -1,6 +1,8 @@
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.*;
+
 
 /**
  * This is an helper class for generating the index file(s).
@@ -14,10 +16,12 @@ import java.util.*;
 public class IndexGenerator
 {
 
+    private String wordFName= "04-330_WordIndex.html";
+    private String exampleFName = "04-330_Examples.html";
+    private TreeMap<String, HTMLLink> htmlFileList = new TreeMap<String, HTMLLink>();
     private String startUrl;
-    private URL startUR;
+    //private TreeMap<String, TreeSet<HTMLLink>> wordIndex = new TreeMap<String, TreeSet<HTMLLink>>();
     private TreeMap<String, LinkedList<HTMLLink>> wordIndex = new TreeMap<String, LinkedList<HTMLLink>>();
-    
     
     public IndexGenerator()
     {
@@ -29,14 +33,13 @@ public class IndexGenerator
         this.startUrl = startUrL;
     }
     
-    public IndexGenerator(URL startUR)
-    {
-        this.startUR = startUR;
-    }
-    
     public String getStartURL()
     {
         return startUrl;
+    }
+    public TreeMap<String, HTMLLink> gethtmlFileList()
+    {
+        return htmlFileList;
     }
     
     public void setStartURL(String startUrl)
@@ -44,9 +47,9 @@ public class IndexGenerator
         this.startUrl = startUrl;
     }
     
-    public String getBaseURL()
+    public String getBaseURL() throws MalformedURLException
     {
-        return URLUtils.getBaseURL(getStartURL());
+        return URLUtils.getBaseURL(new URL(startUrl));
     }
     public String getWebpageTitle()
     {
@@ -63,87 +66,88 @@ public class IndexGenerator
     
     public String getWordsIndexFile()
     {
-        return getWebpageTitle() + "words.html";
+        return getWebpageTitle() + "Words.html";
     }
     public String getExampleIndexFile()
     {
-        return getWebpageTitle() + "examples.html";
+        return getWebpageTitle() + "Examples.html";
     }
+    
     
     public TreeSet<String> parseWords(WebCrawler web) throws IOException
     {
-        LinkedList<String> href;
-        TreeSet<String> words;
+        LinkedList<String> listOfWords, excludeList;
+        TreeSet<String> words, uniqueWords = new TreeSet<String>();
         String[] wordsT;
-        TreeMap<String, HTMLLink> pagesToParse;
-        String link, temp, word = "";
+        String temp, word = "";
         
-        pagesToParse = web.gethtmlFileList();
-        
-        href = web.readInURL(startUR);
-        for (String str : href)
+        excludeList = URLUtils.readFile("excludeWords.txt");
+        listOfWords = web.readInURL(new URL(startUrl));
+        for (String str : listOfWords)
         {
-            temp = str.replaceAll("[\\p{Punct}0-9]", " ");
-            word = word + " " + temp;
+            temp = str.replaceAll("<.*?>", "");
+            temp = temp.replaceAll("[\\p{Punct}0-9]", " ");
+            word = word + " " + temp;            
         }
-//        word = word.replaceAll("^[A-Za-z].$", "");
-        wordsT = word.toLowerCase().split("\\p{Space}");
-        
+
+        wordsT = word.toLowerCase().split("\\p{Space}");      
         words = new TreeSet<String>(Arrays.asList(wordsT));
-        return words;  
+        for (String s : words)
+        {
+            if (!excludeList.contains(s))
+                uniqueWords.add(s);
+        }
+        URLUtils.printTree(uniqueWords);
+        return uniqueWords;  
     }
 
-    public LinkedList<String> addWords(WebCrawler web) throws IOException
-    {
-        int i;
-        TreeSet<String> words;
-        LinkedList<String> uniqueWords =  new LinkedList<String>();
-        words = parseWords(web);
-        
-        for (String s : words)
-        {
-            uniqueWords.add(s);
-//            for (i = 0; i < uniqueWords.size(); i++)
-//            {
-//                if (!(uniqueWords.get(i)).equals(s))
-//                    uniqueWords.add(s);
-//            }
-        }
-        //URLUtils.printStack(uniqueWords);
-        return uniqueWords;
-    }
-    
     public void addWordsAndHTML(WebCrawler web) throws IOException
     {
-        LinkedList<String> words = new LinkedList<String>();
-        LinkedList<HTMLLink> hlinks = new LinkedList<HTMLLink>();
-        HTMLLink htmlink;
-        words = addWords(web);
+        TreeSet<String> words = new TreeSet<String>();
+        //TreeSet<HTMLLink> hlinks;
+        LinkedList<HTMLLink> hlinks;
+        HTMLLink htmlink = new HTMLLink();
         
-        for (String s : words)
+        web.parseAllHtml(new URL(startUrl));
+        web.parseMoreHTML();
+        
+        words = parseWords(web);
+        htmlFileList = web.gethtmlFileList();
+        URLUtils.printMap(htmlFileList);
+        
+        
+        for (String word : words)
         {
-            System.out.println("add + " + s);
-            //htmlink = web.gethtmlFileList().get(s);
-            htmlink = web.getToProcess().get(s);
-            System.out.println("hlink =>> " + htmlink);
-            hlinks.add(htmlink);
-            wordIndex.put(s, hlinks);
+            if(word.equals(""))
+                ;
+            else if (!wordIndex.containsKey(word))
+            {
+                //hlinks = new TreeSet<HTMLLink>();
+                hlinks = new LinkedList<HTMLLink>();
+                htmlink = htmlFileList.get(startUrl);
+                System.out.println("This is the starting url: " + startUrl);
+                System.out.println(htmlink);
+                hlinks.add(htmlink);
+                wordIndex.put(word, hlinks);
+            }
+            else
+            {
+                htmlink = htmlFileList.get(startUrl);
+                hlinks = wordIndex.get(word);
+                hlinks.add(htmlink);
+                wordIndex.put(word, hlinks);
+            }
         } 
-        
-        //URLUtils.printHMap(wordIndex);
-    }
-    public boolean isExclude()
-    {
-        return false;
+        URLUtils.printHMap(wordIndex);
     }
     
     public void writeWordFile(String fname) 
     { 
       Set<String> words;
-      words = wordIndex.keySet();
       String flink;
       LinkedList<HTMLLink> hLinks;
       OutputDataFile dataFile = new OutputDataFile(fname);
+      
       
       dataFile.open();
       if (!dataFile.isOpen())
@@ -151,16 +155,18 @@ public class IndexGenerator
           System.out.println("Can't write to " + dataFile.getName() + " because it is not opening.");
           System.exit(1);
       }
-      
-      for(String s : words)
+      words = wordIndex.keySet();
+      for(String word : words)
       {
-          dataFile.println("<p>" + s + "</p>");
-          hLinks = wordIndex.get(s);
+          System.out.println("Word: " + word);
+          dataFile.println("<p><b>" + word + "</p>");
+          hLinks = wordIndex.get(word);
           for (HTMLLink hlink: hLinks)
           {
               flink = hlink.formatLink();
               dataFile.println("<li>" + flink);    
           }
+          System.out.println("Word: " + word);
       }
       dataFile.close();
     }
