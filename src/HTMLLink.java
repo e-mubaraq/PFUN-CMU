@@ -17,7 +17,7 @@ public class HTMLLink
 {
     private String link;
     private String label;
-    public static String baseURL = "http://public.africa.local.cmu.edu/cbishop/pfun/";
+    public static String baseURL; //= "http://public.africa.local.cmu.edu/cbishop/pfun/"
 
     public HTMLLink()
     {

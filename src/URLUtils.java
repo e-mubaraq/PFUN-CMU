@@ -13,8 +13,6 @@ import java.util.*;
 public class URLUtils
 {
 
-
-
     public static String getBaseURL(URL url)
     {
         String baseURL;
@@ -64,7 +62,7 @@ public class URLUtils
         }      
     }
 
-    public static void printHMap(TreeMap<String, LinkedList<HTMLLink>> wordIndex)
+    public static void printTreeMap(TreeMap<String, LinkedList<HTMLLink>> wordIndex)
     {
         for (String key : wordIndex.keySet())
         {
@@ -89,7 +87,7 @@ public class URLUtils
         input = dataFile.readString();
         while (input != null)
         {
-            excludeWords.add(input.toLowerCase());
+            excludeWords.add(input.toUpperCase());
             input = dataFile.readString();
         }
 

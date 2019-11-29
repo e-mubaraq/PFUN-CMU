@@ -26,11 +26,11 @@ public class SiteIndexGUI extends LayoutGUI
     private JEditorPane wordPane, exPane;
     private JTextField enteredURL;
     private WebCrawler web = new WebCrawler();
-    private IndexGenerator indexG = new IndexGenerator();
+    private IndexGenerator indexG = new IndexGenerator(web);
     
     public void addComponents(JFrame theFrame)
     {
-        JButton genIndexButton, returnButton, returnExample;        
+        JButton genIndexButton, returnToWordButton, returnToExampleButton;        
         JScrollPane scroll, exampleScroll;         
         JPanel urlPanel = new JPanel();
         JPanel scPanel = new JPanel();
@@ -39,8 +39,8 @@ public class SiteIndexGUI extends LayoutGUI
         enteredURL= new JTextField("http://public.africa.local.cmu.edu/cbishop/pfun/");
         
         genIndexButton = new JButton("Generate Index");
-        returnButton = new JButton("Return to Index");
-        returnExample = new JButton("Return to Examples");
+        returnToWordButton = new JButton("Return to Index");
+        returnToExampleButton = new JButton("Return to Examples");
         
         wordPane = new JEditorPane();
         wordPane.setPreferredSize(new Dimension(500, 800));
@@ -58,10 +58,10 @@ public class SiteIndexGUI extends LayoutGUI
         c.setBackground(Color.WHITE);
         
         urlPanel.setLayout(new FlowLayout());
-        urlPanel.add(returnButton);
+        urlPanel.add(returnToWordButton);
         urlPanel.add(enteredURL);
         urlPanel.add(genIndexButton);    
-        urlPanel.add(returnExample);
+        urlPanel.add(returnToExampleButton);
         
         scPanel.setLayout(new GridLayout(1, 1));
         scPanel.add(scroll);
@@ -69,9 +69,7 @@ public class SiteIndexGUI extends LayoutGUI
         
         mainPanel.setLayout(new BorderLayout(50,50));
         mainPanel.add(urlPanel, BorderLayout.NORTH);
-        mainPanel.add(scPanel, BorderLayout.CENTER);
-
-        
+        mainPanel.add(scPanel, BorderLayout.CENTER);        
         c.add(mainPanel);        
         
         wordPane.addHyperlinkListener(new LinkListener(wordPane));
@@ -87,13 +85,13 @@ public class SiteIndexGUI extends LayoutGUI
         }
         );
          
-        returnButton.addActionListener(new ActionListener()
+        returnToWordButton.addActionListener(new ActionListener()
         {
             public void actionPerformed(ActionEvent e)
             {
                 try
                 {
-                    String wordFName = indexG.getExampleIndexFile();
+                    String wordFName = indexG.getWordsIndexFile();
                     indexG.writeWordFile(wordFName);
                     File wordFile = new File(wordFName);
                     wordPane.setPage(wordFile.toURI().toURL());
@@ -106,7 +104,7 @@ public class SiteIndexGUI extends LayoutGUI
         }
         );
         
-        returnExample.addActionListener(new ActionListener()
+        returnToExampleButton.addActionListener(new ActionListener()
         {
             public void actionPerformed(ActionEvent e)
             {
@@ -139,14 +137,13 @@ public class SiteIndexGUI extends LayoutGUI
             File f = new File(exampleFName);
             File wordF= new File(wordFName);
             
-            web.parseAllHtml(new URL(enteredURL.getText()));
+            web.parseHtml(enteredURL.getText());
             web.parseMoreHTML();
             web.writeFile(exampleFName);
             exPane.setPage(f.toURI().toURL());
             
 
-            indexG.parseWords(web);
-            indexG.addWordsAndHTML(web);            
+            indexG.parseWords();
             indexG.writeWordFile(wordFName);
             wordPane.setPage(wordF.toURI().toURL());
         }

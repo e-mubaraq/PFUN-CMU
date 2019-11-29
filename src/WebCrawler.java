@@ -5,9 +5,10 @@ import java.util.*;
 /**
  * This is an helper class for processing ("crawling") the website.
  *
- * @author Mubarak Mikail Andrew ID: mmikail
+ * @author Mubarak Mikail 
+ * Andrew ID: mmikail
  *
- * On my honor, as a Carnegie-Mellon Africa student, I have neither given nor received unauthorized assistance on this work.
+ *On my honor, as a Carnegie-Mellon Africa student, I have neither given nor received unauthorized assistance on this work.
  *
  */
 public class WebCrawler
@@ -41,17 +42,17 @@ public class WebCrawler
     {
         return errorLinks;
     }
-    
-    public LinkedList<String> readInURL(URL site)
+
+    public LinkedList<String> readInURL(String site)
     {
         String str;
-        BufferedReader webPage; 
+        BufferedReader webPage;
         LinkedList<String> lines = new LinkedList<String>();
-        if(!site.toString().contains("#"))
+        if (!site.contains("#") || (site.endsWith(".html")))
         {
             try
             {
-                webPage = new BufferedReader(new InputStreamReader(site.openStream()));
+                webPage = new BufferedReader(new InputStreamReader(new URL(site).openStream()));
                 str = webPage.readLine();
                 while (str != null)
                 {
@@ -62,25 +63,26 @@ public class WebCrawler
             }
             catch (IOException e)
             {
-                // TODO Auto-generated catch block
                 errorLinks.add(e.getMessage() + " " + site);
             }
         }
-       return lines;
+        return lines;
     }
-    
+
     /**
-     * This method returns every line in the readIn html that contain a href  and then filters out tags that are not href
+     * This method returns every line in the readIn html that contain a href and
+     * then filters out tags that are not href
+     * 
      * @param site to be crawled
      * @return List of lines that contain href and without non href tags
      */
-    public LinkedList<String> parseHref(URL site) throws IOException
+    public LinkedList<String> parseHref(String site) throws IOException
     {
         int idx, idx2;
         String line;
         LinkedList<String> allLines, listOfHref = new LinkedList<String>();
         LinkedList<String> list = new LinkedList<String>();
-        
+
         allLines = readInURL(site);
         for (String str : allLines)
         {
@@ -96,46 +98,53 @@ public class WebCrawler
         }
         return list;
     }
-/**
- * 
- * @return
- * @throws IOException
- */
-   public void parseAllHtml(URL site) throws IOException
-   {
-       HTMLLink hlink;
-       String tLink, link, label;
-       LinkedList<String> hrefs;
-       
-       hrefs = parseHref(site);
-       for (String s : hrefs)
-       {
-           tLink = getLink(s);         
-           label = getLabel(s);
-           hlink = new HTMLLink(label, tLink);
-           
-           link = hlink.getFullLink(tLink);
-           hlink = new HTMLLink(label, link);
-           
-           if (!link.startsWith(HTMLLink.baseURL) || link.contains("#")) // Links not part of Cathy's website and those on the same page with different IDs
-               ;
-           else if (isSource(link))     //Links that are source files
-               exampleFileList.put(link, hlink);
-           else if (htmlFileList.containsKey(hlink.getLink()))      //Links already part of the htmlFilelist
-               ;
-           else if (toProcess.containsKey(hlink.getLink()))         //Links to be processed
-               ;
-           else
-               toProcess.put(hlink.getLink(), hlink);
-       }
-        //URLUtils.printList(errorLinks);
+
+    /**
+     * This method parses the first page for links and populates the htmlfilelist
+     * and examplefilelist
+     * 
+     * @throws IOException
+     */
+    public void parseHtml(String site) throws IOException
+    {
+        HTMLLink hlink;
+        String tLink, link, label;
+        LinkedList<String> hrefs;
+
+        hrefs = parseHref(site);
+        for (String s : hrefs)
+        {
+            tLink = getLink(s);
+            label = getLabel(s);
+            hlink = new HTMLLink(label, tLink);
+
+            link = hlink.getFullLink(tLink);
+            hlink = new HTMLLink(label, link);
+
+            if (!link.startsWith(HTMLLink.baseURL) || link.contains("#")) // Links not part of Cathy's website and those
+                                                                          // on the same page with different IDs
+                continue;
+            else if (isSource(link)) // Links that are source files
+                exampleFileList.put(link, hlink);
+            else if (!isHTML(link))
+                continue;
+            else if (htmlFileList.containsKey(hlink.getLink())) // Links already part of the htmlFilelist
+                continue;
+            else if (toProcess.containsKey(hlink.getLink())) // Links to be processed
+                continue;
+            else
+                toProcess.put(hlink.getLink(), hlink);
+        }
     }
-    
+
+    /**
+     * This method parse all the links in htmlfilelist by calling parseHtml on each of them
+     */
     public void parseMoreHTML()
     {
         HTMLLink hlink;
         String link;
-        
+
         while (!toProcess.isEmpty())
         {
             link = toProcess.firstKey();
@@ -144,23 +153,22 @@ public class WebCrawler
             htmlFileList.put(link, hlink);
             try
             {
-                parseAllHtml(new URL (hlink.getLink()));
+                parseHtml(hlink.getLink());
             }
             catch (IOException e)
             {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
         }
     }
-    
-      public void writeFile(String fname) 
-      { 
+
+    public void writeFile(String fname)
+    {
         Set<String> links;
         String flink;
         HTMLLink hlink;
         OutputDataFile dataFile = new OutputDataFile(fname);
-        
+
         links = exampleFileList.keySet();
         dataFile.open();
         if (!dataFile.isOpen())
@@ -169,16 +177,15 @@ public class WebCrawler
             System.exit(1);
         }
         dataFile.println("<b>Example Files</b>");
-        for(String s : links)
+        for (String s : links)
         {
             hlink = exampleFileList.get(s);
             flink = hlink.formatLink();
-            dataFile.println("<br>" + flink + "</br>");    
+            dataFile.println("<br>" + flink + "</br>");
         }
 
         dataFile.close();
-      }
-     
+    }
 
     public String getLabel(String link)
     {
@@ -221,7 +228,8 @@ public class WebCrawler
 
     public boolean isSource(String link)
     {
-        if (link.endsWith(".java") || link.endsWith(".c") || link.endsWith(".h") || link.endsWith(".cpp"))
+        if (link.endsWith(".java") || link.endsWith(".c") || link.endsWith(".h") || link.endsWith(".cpp")
+                || link.endsWith(".txt"))
             return true;
         return false;
     }

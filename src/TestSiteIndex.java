@@ -26,7 +26,6 @@ public class TestSiteIndex
         secretLink = "http://public.africa.cmu.edu/cbishop/pfun/.phase3/mmikailt9V/";
         classWebSite = "http://public.africa.cmu.edu/cbishop/pfun/";
         link = new HTMLLink("04-330" , classWebSite);
-        indexG = new IndexGenerator(classWebSite);
         
         System.out.println("1. My secret link for Phase 3: " + secretLink);
         System.out.println("2. The class of the callback object for the Listener on the Return to Index button is: SiteIndexGUI");
