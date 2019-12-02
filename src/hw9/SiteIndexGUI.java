@@ -1,14 +1,9 @@
+package hw9;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.*;
 import java.io.*;
 import java.net.MalformedURLException;
-import java.net.URL;
-
-import javax.annotation.Generated;
 import javax.swing.*;
-
-import GUI.FlowGUI;
 
 
 /**

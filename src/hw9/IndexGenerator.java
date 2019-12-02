@@ -1,3 +1,4 @@
+package hw9;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -83,6 +84,7 @@ public class IndexGenerator
         excludeList = URLUtils.readFile("excludeWords.txt");
         htmlFileList = web.gethtmlFileList();
         linkKeys = htmlFileList.keySet();
+        
         for (String linkKey : linkKeys)
         {
             htmlink = htmlFileList.get(linkKey);
@@ -92,14 +94,15 @@ public class IndexGenerator
             {
                 temp = str.replaceAll("<.*?>", "");
                 temp = temp.replaceAll("[\\p{Punct}0-9]", " ");
-                cleanedLines = cleanedLines + " " + temp;              
+                cleanedLines = cleanedLines + " " + temp;
             }
+
             wordsT = cleanedLines.toUpperCase().split("\\p{Space}");
             uniqueWords = new TreeSet<String>(Arrays.asList(wordsT));
 
             for (String word : uniqueWords)
             {
-                if (excludeList.contains(word) || word.length() <= 3)
+                if (excludeList.contains(word) || word.length() <= 4)
                     continue;
                 else
                 {
@@ -120,7 +123,7 @@ public class IndexGenerator
                         wordIndex.put(word, hlinks);
                     }
                 }
-                System.out.println("Add word " + word + " for " + htmlink.getLink() + " to wordIndex");
+                //System.out.println("Add word " + word + " for " + htmlink.getLink() + " to wordIndex");
             }
         }
     }
@@ -130,7 +133,6 @@ public class IndexGenerator
         Set<String> words;
         String flink;
         LinkedList<HTMLLink> hLinks;
-        URLUtils.printMap(htmlFileList);
         OutputDataFile dataFile = new OutputDataFile(fname);
 
         dataFile.open();
@@ -142,7 +144,6 @@ public class IndexGenerator
         words = wordIndex.keySet();
         for (String word : words)
         {
-            System.out.println("Word: " + word);
             dataFile.println("<p><b>" + word + "</p>");
             hLinks = wordIndex.get(word);
             for (HTMLLink hlink : hLinks)

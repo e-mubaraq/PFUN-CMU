@@ -1,3 +1,4 @@
+package hw9;
 
 import java.awt.*;  // import the AWT graphic classes
 import java.io.IOException;
