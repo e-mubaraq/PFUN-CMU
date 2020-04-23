@@ -1,4 +1,5 @@
 package hw8;
+
 import java.lang.*;
 import java.util.*;
 
@@ -8,63 +9,63 @@ import javax.swing.text.*;
 import javax.swing.*;
 
 /**
-  *
-  * This class represents a button that can be clicked only once
-  * and when clicked, will provide the label on the button to the
-  * StringHandler object (called callback) passed into the constructor.
-  *
-  *  @author Cathy Bishop 
-  *
-  */
+ *
+ * This class represents a button that can be clicked only once and when
+ * clicked, will provide the label on the button to the StringHandler object
+ * (called callback) passed into the constructor.
+ *
+ * @author Cathy Bishop
+ *
+ */
 
 public class SingleUseButton extends JButton
 {
-public SingleUseButton(String text, StringHandler callback)
-{
-	SingleClickListener eventListener;
+    public SingleUseButton(String text, StringHandler callback)
+    {
+        SingleClickListener eventListener;
 
-	// Use text as the label
+        // Use text as the label
 
-	setText(text);
+        setText(text);
 
-	// Create the listener and add it to the button
+        // Create the listener and add it to the button
 
-	eventListener = new SingleClickListener(callback);
-	addActionListener(eventListener);
-}
+        eventListener = new SingleClickListener(callback);
+        addActionListener(eventListener);
+    }
 
-public static ArrayList<SingleUseButton> getLetterButtons(StringHandler callback)
-{
-    ArrayList<SingleUseButton> buttons = new ArrayList<SingleUseButton>();
+    public static ArrayList<SingleUseButton> getLetterButtons(StringHandler callback)
+    {
+        ArrayList<SingleUseButton> buttons = new ArrayList<SingleUseButton>();
 
-    for (char letter = 'A'; letter <= 'Z'; letter++)
-        buttons.add(new SingleUseButton(Character.toString(letter), callback));
+        for (char letter = 'A'; letter <= 'Z'; letter++)
+            buttons.add(new SingleUseButton(Character.toString(letter), callback));
 
-    return buttons;
-}
+        return buttons;
+    }
 
 // SingleClickListener is an inner class - meaning it is inside another class and not 
 // intended to be re-used.
 
-class	SingleClickListener implements ActionListener
-{
-private StringHandler	_callback;
+    class SingleClickListener implements ActionListener
+    {
+        private StringHandler _callback;
 
-public	SingleClickListener(StringHandler callback)
-{
-	_callback = callback;
-}
+        public SingleClickListener(StringHandler callback)
+        {
+            _callback = callback;
+        }
 
-public void actionPerformed(ActionEvent e)
-{
-    // Note: Why all the casting? Just to show you something interesting ...
-    //       See if you can figure it out (optional).
+        public void actionPerformed(ActionEvent e)
+        {
+            // Note: Why all the casting? Just to show you something interesting ...
+            // See if you can figure it out (optional).
 
-    JComponent button = (JComponent) e.getSource();
+            JComponent button = (JComponent) e.getSource();
 
-    button.setEnabled(false);
-	_callback.processString(((JButton)button).getText());
-}
+            button.setEnabled(false);
+            _callback.processString(((JButton) button).getText());
+        }
 
-}
+    }
 }

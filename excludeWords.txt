@@ -18,6 +18,7 @@ Across
 Add
 Added
 Adjacent
+Adjective
 Adjust
 Algorithm
 All

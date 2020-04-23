@@ -32,7 +32,7 @@ public class WordCount
         str = keyboard.readLine();
 
         lineCounter = 0;
-        while (!(str.equals(""))) // lineCounter < 10 &&
+        while (!(str.equals("")))
         {
             if (lineCounter >= 10)
             {
